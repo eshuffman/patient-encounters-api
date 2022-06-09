@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthAPI", "HealthAPI\HealthAPI\HealthAPI.csproj", "{0D2A81A4-9D08-4FDE-B355-7323E39A4280}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthAPI.Data", "HealthAPI\HealthAPI.Data\HealthAPI.Data.csproj", "{E04270E1-C1FD-4AF5-811C-B53AE67D6CF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthAPI.DTOs", "HealthAPI\HealthAPI.DTOs\HealthAPI.DTOs.csproj", "{73F14630-2EAE-4626-A819-8F5C84BDD70C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthAPI.Provider", "HealthAPI\HealthAPI.Provider\HealthAPI.Provider.csproj", "{0AB735D2-49B5-4C8A-A7A2-4B19C1E4BB2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthAPI.Utilities", "HealthAPI\HealthAPI.Utilities\HealthAPI.Utilities.csproj", "{61D6F9AE-2812-4EAE-B6CB-C70819202075}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthAPI.IntegrationTests", "HealthAPI.IntegrationTests\HealthAPI.IntegrationTests.csproj", "{0A2F48A6-55FF-4338-A7DB-B86098B10201}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthAPI.UnitTests", "HealthAPI.UnitTests\HealthAPI.UnitTests.csproj", "{4EB137FB-7B38-48DA-8664-5193AA4EFE02}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D2A81A4-9D08-4FDE-B355-7323E39A4280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D2A81A4-9D08-4FDE-B355-7323E39A4280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D2A81A4-9D08-4FDE-B355-7323E39A4280}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D2A81A4-9D08-4FDE-B355-7323E39A4280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E04270E1-C1FD-4AF5-811C-B53AE67D6CF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E04270E1-C1FD-4AF5-811C-B53AE67D6CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E04270E1-C1FD-4AF5-811C-B53AE67D6CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E04270E1-C1FD-4AF5-811C-B53AE67D6CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73F14630-2EAE-4626-A819-8F5C84BDD70C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73F14630-2EAE-4626-A819-8F5C84BDD70C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73F14630-2EAE-4626-A819-8F5C84BDD70C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73F14630-2EAE-4626-A819-8F5C84BDD70C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AB735D2-49B5-4C8A-A7A2-4B19C1E4BB2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AB735D2-49B5-4C8A-A7A2-4B19C1E4BB2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AB735D2-49B5-4C8A-A7A2-4B19C1E4BB2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AB735D2-49B5-4C8A-A7A2-4B19C1E4BB2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61D6F9AE-2812-4EAE-B6CB-C70819202075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61D6F9AE-2812-4EAE-B6CB-C70819202075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61D6F9AE-2812-4EAE-B6CB-C70819202075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61D6F9AE-2812-4EAE-B6CB-C70819202075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A2F48A6-55FF-4338-A7DB-B86098B10201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A2F48A6-55FF-4338-A7DB-B86098B10201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A2F48A6-55FF-4338-A7DB-B86098B10201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A2F48A6-55FF-4338-A7DB-B86098B10201}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EB137FB-7B38-48DA-8664-5193AA4EFE02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EB137FB-7B38-48DA-8664-5193AA4EFE02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EB137FB-7B38-48DA-8664-5193AA4EFE02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EB137FB-7B38-48DA-8664-5193AA4EFE02}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07BE8841-483C-4F8C-A331-72DDD8DF1373}
+	EndGlobalSection
+EndGlobal

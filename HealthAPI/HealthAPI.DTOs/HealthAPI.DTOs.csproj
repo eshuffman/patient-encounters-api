@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Movies %28copy%29\" />
+    <None Remove="Patients\" />
+    <None Remove="Encounters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Patients\" />
+    <Folder Include="Encounters\" />
+  </ItemGroup>
+</Project>

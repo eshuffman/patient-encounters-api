@@ -1,0 +1,364 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/workemily/Desktop/final-api/HealthAPI.UnitTests/HealthAPI.UnitTests.csproj": {}
+  },
+  "projects": {
+    "/Users/workemily/Desktop/final-api/HealthAPI.UnitTests/HealthAPI.UnitTests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/workemily/Desktop/final-api/HealthAPI.UnitTests/HealthAPI.UnitTests.csproj",
+        "projectName": "HealthAPI.UnitTests",
+        "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI.UnitTests/HealthAPI.UnitTests.csproj",
+        "packagesPath": "/Users/workemily/.nuget/packages/",
+        "outputPath": "/Users/workemily/Desktop/final-api/HealthAPI.UnitTests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/workemily/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj": {
+                "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj"
+              },
+              "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Provider/HealthAPI.Provider.csproj": {
+                "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Provider/HealthAPI.Provider.csproj"
+              },
+              "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj": {
+                "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[5.10.3, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Testing": {
+              "target": "Package",
+              "version": "[5.0.12, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.9.4, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.17.2, )"
+            },
+            "coverlet.collector": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.0.2, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.4.1, )"
+            },
+            "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.4.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/x64/sdk/6.0.104/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Data/HealthAPI.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Data/HealthAPI.Data.csproj",
+        "projectName": "HealthAPI.Data",
+        "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Data/HealthAPI.Data.csproj",
+        "packagesPath": "/Users/workemily/.nuget/packages/",
+        "outputPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Data/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/workemily/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj": {
+                "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.AspNet.WebApi.Core": {
+              "target": "Package",
+              "version": "[5.2.7, )"
+            },
+            "Microsoft.AspNetCore.Mvc": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.9, )"
+            },
+            "Microsoft.Extensions.Configuration.Binder": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[5.0.7, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/x64/sdk/6.0.104/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj",
+        "projectName": "HealthAPI.DTOs",
+        "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj",
+        "packagesPath": "/Users/workemily/.nuget/packages/",
+        "outputPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.DTOs/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/workemily/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/x64/sdk/6.0.104/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Provider/HealthAPI.Provider.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Provider/HealthAPI.Provider.csproj",
+        "projectName": "HealthAPI.Provider",
+        "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Provider/HealthAPI.Provider.csproj",
+        "packagesPath": "/Users/workemily/.nuget/packages/",
+        "outputPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Provider/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/workemily/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Data/HealthAPI.Data.csproj": {
+                "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Data/HealthAPI.Data.csproj"
+              },
+              "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj": {
+                "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj"
+              },
+              "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj": {
+                "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[10.1.1, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/x64/sdk/6.0.104/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj",
+        "projectName": "HealthAPI.Utilities",
+        "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj",
+        "packagesPath": "/Users/workemily/.nuget/packages/",
+        "outputPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/workemily/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/x64/sdk/6.0.104/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
