@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5K+fRbfQfEOS6fK60YLxr8j5FdXCp0ZEQMKqTHhSEg81tU8680tX24EBBh/igCBa0d/mKTsrAngc/yj8Zxno1g==",
+  "dgSpecHash": "FNPWoVr/JHR2g+bwKTuLzvq6UPNSQncxbiLH1dXwvKsY9U8rNG73/M8PRRMIPOSfzIfL5C5QK/DTyYxkrLfMzA==",
   "success": true,
-  "projectFilePath": "/Users/workemily/Desktop/final-api/HealthAPI.IntegrationTests/HealthAPI.IntegrationTests.csproj",
+  "projectFilePath": "/Users/workemily/Desktop/final-project-api/HealthAPI.IntegrationTests/HealthAPI.IntegrationTests.csproj",
   "expectedPackageFiles": [
     "/Users/workemily/.nuget/packages/automapper/10.1.1/automapper.10.1.1.nupkg.sha512",
     "/Users/workemily/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/8.1.1/automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",

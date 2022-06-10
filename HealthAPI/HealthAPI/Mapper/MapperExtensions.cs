@@ -13,7 +13,7 @@ namespace HealthAPI.DTOMappings
         public static IEnumerable<EncounterDTO> MapEncountersToEncounterDtos(this IMapper mapper, IEnumerable<Encounter> encounters)
         {
             return encounters
-                .Select(x => mapper.MapEncounterToEncounterlDto(x))
+                .Select(x => mapper.MapEncounterToEncounterDto(x))
                 .ToList();
         }
 
@@ -22,7 +22,7 @@ namespace HealthAPI.DTOMappings
         /// </summary>
         /// <param name="encounter">The encounter to be persisted.</param>
         /// <returns>A encounter DTO.</returns>
-        public static EncounterDTO MapEncounterToEncounterlDto(this IMapper mapper, Encounter encounter)
+        public static EncounterDTO MapEncounterToEncounterDto(this IMapper mapper, Encounter encounter)
         {
             return new EncounterDTO()
             {

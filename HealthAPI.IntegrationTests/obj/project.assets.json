@@ -12122,11 +12122,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/workemily/Desktop/final-api/HealthAPI.IntegrationTests/HealthAPI.IntegrationTests.csproj",
+      "projectUniqueName": "/Users/workemily/Desktop/final-project-api/HealthAPI.IntegrationTests/HealthAPI.IntegrationTests.csproj",
       "projectName": "HealthAPI.IntegrationTests",
-      "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI.IntegrationTests/HealthAPI.IntegrationTests.csproj",
+      "projectPath": "/Users/workemily/Desktop/final-project-api/HealthAPI.IntegrationTests/HealthAPI.IntegrationTests.csproj",
       "packagesPath": "/Users/workemily/.nuget/packages/",
-      "outputPath": "/Users/workemily/Desktop/final-api/HealthAPI.IntegrationTests/obj/",
+      "outputPath": "/Users/workemily/Desktop/final-project-api/HealthAPI.IntegrationTests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/workemily/.config/NuGet/NuGet.Config"
@@ -12141,11 +12141,11 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj": {
-              "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj"
+            "/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj": {
+              "projectPath": "/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj"
             },
-            "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI/HealthAPI.csproj": {
-              "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI/HealthAPI.csproj"
+            "/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI/HealthAPI.csproj": {
+              "projectPath": "/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI/HealthAPI.csproj"
             }
           }
         }

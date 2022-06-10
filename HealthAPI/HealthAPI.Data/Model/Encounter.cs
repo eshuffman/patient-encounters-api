@@ -25,11 +25,11 @@ namespace HealthAPI.Data.Model
 
         public string ChiefComplaint { get; set; }
 
-        public int? Pulse { get; set; }
+        public double? Pulse { get; set; }
 
-        public int? Systolic { get; set; }
+        public double? Systolic { get; set; }
 
-        public int? Diastolic { get; set; }
+        public double? Diastolic { get; set; }
 
         public string Date { get; set; }
 

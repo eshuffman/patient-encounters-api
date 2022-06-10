@@ -10406,11 +10406,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/workemily/Desktop/final-api/HealthAPI.UnitTests/HealthAPI.UnitTests.csproj",
+      "projectUniqueName": "/Users/workemily/Desktop/final-project-api/HealthAPI.UnitTests/HealthAPI.UnitTests.csproj",
       "projectName": "HealthAPI.UnitTests",
-      "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI.UnitTests/HealthAPI.UnitTests.csproj",
+      "projectPath": "/Users/workemily/Desktop/final-project-api/HealthAPI.UnitTests/HealthAPI.UnitTests.csproj",
       "packagesPath": "/Users/workemily/.nuget/packages/",
-      "outputPath": "/Users/workemily/Desktop/final-api/HealthAPI.UnitTests/obj/",
+      "outputPath": "/Users/workemily/Desktop/final-project-api/HealthAPI.UnitTests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/workemily/.config/NuGet/NuGet.Config"
@@ -10425,14 +10425,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj": {
-              "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj"
+            "/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj": {
+              "projectPath": "/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.DTOs/HealthAPI.DTOs.csproj"
             },
-            "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Provider/HealthAPI.Provider.csproj": {
-              "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Provider/HealthAPI.Provider.csproj"
+            "/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Provider/HealthAPI.Provider.csproj": {
+              "projectPath": "/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Provider/HealthAPI.Provider.csproj"
             },
-            "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj": {
-              "projectPath": "/Users/workemily/Desktop/final-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj"
+            "/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj": {
+              "projectPath": "/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Utilities/HealthAPI.Utilities.csproj"
             }
           }
         }

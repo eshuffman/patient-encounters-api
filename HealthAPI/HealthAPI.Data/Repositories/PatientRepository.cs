@@ -21,9 +21,17 @@ namespace HealthAPI.Data.Repositories
             _ctx = ctx;
         }
 
+        public async Task<Patient> GetPatientByEmailAsync(Patient patient)
+        {
+            return await _ctx.Patients
+                .AsNoTracking()
+                .Where(p => p.Email == patient.Email)
+                .SingleOrDefaultAsync();
+        }
 
         public async Task<Patient> CreatePatientAsync(Patient patient)
         {
+
             await _ctx.Patients.AddAsync(patient);
             await _ctx.SaveChangesAsync();
 

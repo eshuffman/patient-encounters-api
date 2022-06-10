@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "H9webs6/qpMVL4A1R8Y+yw1F+oDyE2YfdkfmrP4By6X+PMkVZ6j0sLhPiQ0XD3Kh7w9h9qxqkBIiQAiZUEgB7Q==",
+  "dgSpecHash": "RPjPhB5fcYTHwTm0rDvORpGWsVCQAEq385Uq7k5DuqNKBbhFjwJYtIeipJ6JUv2rz/y0Eod4tsoKAONmutfeiQ==",
   "success": true,
-  "projectFilePath": "/Users/workemily/Desktop/final-api/HealthAPI.UnitTests/HealthAPI.UnitTests.csproj",
+  "projectFilePath": "/Users/workemily/Desktop/final-project-api/HealthAPI.UnitTests/HealthAPI.UnitTests.csproj",
   "expectedPackageFiles": [
     "/Users/workemily/.nuget/packages/automapper/10.1.1/automapper.10.1.1.nupkg.sha512",
     "/Users/workemily/.nuget/packages/castle.core/4.4.1/castle.core.4.4.1.nupkg.sha512",

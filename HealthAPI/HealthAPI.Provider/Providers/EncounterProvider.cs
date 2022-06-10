@@ -34,8 +34,24 @@ namespace HealthAPI.Provider.Providers
         /// <returns>The persisted encounter.</returns>
         public async Task<Encounter> CreateEncounterAsync(int? patientId, Encounter newEncounter)
         {
+            Patient patient;
+            ValidateEncounterInputFields(newEncounter, patientId);
 
-            //ValidateEncounterInputFields(newEncounter);
+            try
+            {
+                patient = await _patientRepository.GetPatientByIdAsync(patientId);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+
+            if (patient == null)
+            {
+                throw new NotFoundException($"Patient with ID of {patientId} could not be found in the database.");
+            }
 
             Encounter savedEncounter;
 
@@ -69,7 +85,7 @@ namespace HealthAPI.Provider.Providers
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"NotFoundException in WishlistProvider.GetWishlistByIdAsync: {ex.Message}");
+                _logger.LogInformation(ex.Message);
                 throw new NotFoundException($"Patient with ID of {patientId} could not be found in the database.");
             }
 
@@ -86,12 +102,38 @@ namespace HealthAPI.Provider.Providers
         }
 
         /// <summary>
-        /// Updates encounter object in database via inputted encounter ID, using inputted encounter model.
+        /// Retrieves a single patient encounter from the database via inputted ID
         /// </summary>
         /// <param name="encounterId"></param>
-        /// <param name="updatedEncounter"></param>
-        /// <returns>Updated rental object.</returns>
-        public async Task<Encounter> UpdateEncounterAsync(int encounterId, Encounter updatedEncounter)
+        /// <returns>Single patient encounter object with matching ID</returns>
+        public async Task<Encounter> GetEncounterByIdAsync(int encounterId)
+        {
+            Encounter existingEncounter;
+            try
+            {
+                existingEncounter = await _encounterRepository.GetEncounterByIdAsync(encounterId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new ServiceUnavailableException("There was a problem connecting to the database.");
+            }
+
+            if (existingEncounter == null)
+            {
+                _logger.LogInformation($"Encounter with id of {encounterId} does not exist.");
+                throw new NotFoundException($"Encounter with id of {encounterId} not found.");
+            }
+            return existingEncounter;
+        }
+
+            /// <summary>
+            /// Updates encounter object in database via inputted encounter ID, using inputted encounter model.
+            /// </summary>
+            /// <param name="encounterId"></param>
+            /// <param name="updatedEncounter"></param>
+            /// <returns>Updated rental object.</returns>
+            public async Task<Encounter> UpdateEncounterAsync(int encounterId, Encounter updatedEncounter)
         {
             Encounter existingEncounter;
 
@@ -114,7 +156,7 @@ namespace HealthAPI.Provider.Providers
             if (updatedEncounter.Id == default)
                 updatedEncounter.Id = encounterId;
 
-            //ValidateRentalInputFields(updatedRental);
+            ValidateEncounterInputFields(updatedEncounter, encounterId);
 
             try
             {
@@ -129,199 +171,180 @@ namespace HealthAPI.Provider.Providers
 
             return updatedEncounter;
         }
-        ///// Validation Methods
+        /// Validation Methods
 
-        /////Validation method to check whether a rented movie exists in the database and the inputted value is not empty or null.
-        //public async Task<Rental> ValidateRentedMovieIds(Rental newRental)
-        //{
-        //    var rentedMovies = newRental.RentedMovies;
-        //    var invalidIds = new List<int?>();
-        //    bool isNotMovie;
+        /// <summary>
+        /// Validation method to check whether patient encounter input fields are not empty and contain appropriately-formatted information
+        /// </summary>
+        /// <param name="newEncounter"></param>
+        public void ValidateEncounterInputFields(Encounter newEncounter, int? patientId)
+        {
+            List<string> encounterExceptions = new();
 
-        //    if (rentedMovies == null)
-        //    {
-        //        throw new BadRequestException("Movie ID cannot be empty.");
-        //    }
+            if (ValidateIfEmptyOrNull(newEncounter.PatientId.ToString()))
+            {
+                encounterExceptions.Add("Patient ID is required.");
+            }
+            else if (newEncounter.PatientId != patientId)
+            {
+                encounterExceptions.Add("Patient ID must match ID of patient encounter is being recorded for.");
+            }
+            if (ValidateIfEmptyOrNull(newEncounter.VisitCode))
+            {
+                encounterExceptions.Add("Visit code is required.");
+            }
+            else if (!ValidateVisitCodeFormat(newEncounter.VisitCode))
+            {
+                encounterExceptions.Add("Visit code must match format of LDL DLD (eg. A1A 2B2).");
+            }
+            if (ValidateIfEmptyOrNull(newEncounter.Provider))
+            {
+                encounterExceptions.Add("Provider is required.");
+            }
+            if (ValidateIfEmptyOrNull(newEncounter.BillingCode))
+            {
+                encounterExceptions.Add("Billing code is required.");
+            }
+            else if (!ValidateBillingCodeFormat(newEncounter.BillingCode))
+            {
+                encounterExceptions.Add("Billing code must match format of DDD.DDD.DDD-DD (eg. 123.123.123-12).");
+            }
+            if (ValidateIfEmptyOrNull(newEncounter.Icd10))
+            {
+                encounterExceptions.Add("ICD10 code is required.");
+            }
+            else if (!ValidateIcd10Format(newEncounter.Icd10))
+            {
+                encounterExceptions.Add("ICD10 must match format of LDD (eg. A12).");
+            }
+            if (ValidateIfEmptyOrNull(newEncounter.TotalCost.ToString()))
+            {
+                encounterExceptions.Add("Total cost is required.");
+            }
+            else if (!ValidatePriceFormat(newEncounter.TotalCost.ToString()))
+            {
+                encounterExceptions.Add("Total cost must match format of XX.XX.");
+            }
+            if (ValidateIfEmptyOrNull(newEncounter.Copay.ToString()))
+            {
+                encounterExceptions.Add("Copay is required.");
+            }
+            else if (!ValidatePriceFormat(newEncounter.Copay.ToString()))
+            {
+                encounterExceptions.Add("Copay must match format of XX.XX");
+            }
+            if (ValidateIfEmptyOrNull(newEncounter.ChiefComplaint))
+            {
+                encounterExceptions.Add("Chief complaint is required.");
+            }
+            if (ValidateIfEmptyOrNull(newEncounter.Date))
+            {
+                encounterExceptions.Add("Encounter date is required.");
+            }
+            else if (!ValidateDateFormat(newEncounter.Date))
+            {
+                encounterExceptions.Add("Date must match format of YYYY-MM-DD.");
+            }
+            if (!ValidateIfEmptyOrNull(newEncounter.Pulse.ToString()))
+            {
+                if (!ValidateWholeInteger(newEncounter.Pulse.ToString()))
+                {
+                    encounterExceptions.Add("Pulse must be a whole integer.");
+                }
+            }
+            if (!ValidateIfEmptyOrNull(newEncounter.Systolic.ToString()))
+            {
+                if (!ValidateWholeInteger(newEncounter.Systolic.ToString()))
+                {
+                    encounterExceptions.Add("Systolic must be a whole integer.");
+                }
+            }
+            if (!ValidateIfEmptyOrNull(newEncounter.Diastolic.ToString()))
+            {
+                if (!ValidateWholeInteger(newEncounter.Diastolic.ToString()))
+                {
+                    encounterExceptions.Add("Diastolic must be a whole integer.");
+                }
+            }
 
-        //    foreach (var rental in rentedMovies)
-        //    {
-        //        if (rental.MovieId < 0 || rental.MovieId == null)
-        //        {
-        //            throw new BadRequestException("Movie ID cannot be empty.");
-        //        }
+                if (encounterExceptions.Count > 0)
+            {
+                _logger.LogInformation(" ", encounterExceptions);
+                throw new BadRequestException(string.Join(" ", encounterExceptions));
+            }
+        }
 
-        //        try
-        //        {
-        //            isNotMovie = await ValidateRentedMovieIds(rental);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            _logger.LogError(ex.Message);
-        //            throw new ServiceUnavailableException("There was a problem connecting to the database.");
-        //        }
+        //Helper validation method to check whether a string is empty or null.
+        public bool ValidateIfEmptyOrNull(string modelField)
+        {
+            return string.IsNullOrWhiteSpace(modelField);
+        }
 
-        //        if (isNotMovie)
-        //        {
-        //            invalidIds.Add(rental.MovieId);
-        //        }
-        //    }
+        /// <summary>
+        /// Helper validation method using Regex to verify that a visit code format matches LDL DLD
+        /// </summary>
+        /// <param name="modelField"></param>
+        /// <returns>Boolean</returns>
+        public bool ValidateVisitCodeFormat(string modelField)
+        {
+            Regex visitCodeFormat = new Regex(@"^[A-Z][\d][A-Z][\s][\d][A-Z][\d]$");
+            return visitCodeFormat.IsMatch(modelField);
+        }
 
-        //    if (invalidIds.Count > 0)
-        //    {
-        //        _logger.LogInformation("One or more requested movies do not exist in our database.");
-        //        throw new BadRequestException("One or more requested movies do not exist in our database.");
-        //    }
+        /// <summary>
+        /// Helper validation method using Regex to verify that a billing code format matches DDD.DDD.DDD-DD
+        /// </summary>
+        /// <param name="modelField"></param>
+        /// <returns>Boolean</returns>
+        public bool ValidateBillingCodeFormat(string modelField)
+        {
+            Regex billingCodeFormat = new Regex(@"^[\d]{3}.[\d]{3}.[\d]{3}-[\d]{2}$");
+            return billingCodeFormat.IsMatch(modelField);
+        }
 
-        //    return newRental;
-        //}
+        /// <summary>
+        /// Helper validation method using Regex to verify that ICD10 format matches LDD
+        /// </summary>
+        /// <param name="modelField"></param>
+        /// <returns>Boolean</returns>
+        public bool ValidateIcd10Format(string modelField)
+        {
+            Regex icdTenFormat = new Regex(@"^[A-Z][\d]{2}$");
+            return icdTenFormat.IsMatch(modelField);
+        }
 
-        ///// <summary>
-        ///// Validation method to check whether a rented movie's input fields are not empty and contain appropriately-formatted information
-        ///// </summary>
-        ///// <param name="newRental"></param>
-        //public void ValidateRentedMovieInputFields(Rental newRental)
-        //{
-        //    List<string> rentalExceptions = new();
-        //    var rentedMovies = newRental.RentedMovies;
 
-        //    foreach (var rental in rentedMovies)
-        //    {
-        //        string movieId = rental.MovieId.ToString();
-        //        string daysRented = rental.DaysRented.ToString();
+        /// <summary>
+        /// Helper validation method using Regex to verify that a price format matches DD.DD
+        /// </summary>
+        /// <param name="modelField"></param>
+        /// <returns>Boolean</returns>
+        public bool ValidatePriceFormat(string modelField)
+        {
+            Regex priceFormat = new Regex(@"^\d+.\d{2}$");
+            return priceFormat.IsMatch(modelField);
+        }
 
-        //        if (ValidateIfEmptyOrNull(movieId))
-        //        {
-        //            rentalExceptions.Add("Movie ID is required.");
-        //        }
-        //        if (ValidateIfEmptyOrNull(daysRented))
-        //        {
-        //            rentalExceptions.Add("Days rented is required.");
-        //        }
-        //        if (rental.DaysRented < 0 || rental.DaysRented == null)
-        //        {
-        //            rentalExceptions.Add("Number of days rented must be greater than zero.");
-        //        }
+        /// <summary>
+        /// Validates if input contains only numeric digits, used to validate patient encounter pulse, systolic, and diastolic.
+        /// </summary>
+        /// <param name="input">string input field</param>
+        /// <returns>boolean, true if the input is valid</returns>
+        public bool ValidateWholeInteger(string input)
+        {
+            var integerCheck = new Regex(@"^\d+$");
+            return integerCheck.IsMatch(input);
+        }
 
-        //        if (rentalExceptions.Count > 0)
-        //        {
-        //            _logger.LogInformation(" ", rentalExceptions);
-        //            throw new BadRequestException(string.Join(" ", rentalExceptions));
-        //        }
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Validation method to check whether all fields of a rental object are appropriately formatted an are not empty or null.
-        ///// </summary>
-        ///// <param name="newRental"></param>
-        //public void ValidateRentalInputFields(Rental newRental)
-        //{
-        //    List<string> rentalExceptions = new();
-
-        //    if (ValidateIfEmptyOrNull(newRental.RentalDate))
-        //    {
-        //        rentalExceptions.Add("Rental date is required.");
-        //    }
-        //    else
-        //    {
-        //        if (!ValidateDateFormat(newRental.RentalDate))
-        //            rentalExceptions.Add("Rental date format must match YYYY-MM-DD");
-        //    }
-        //    if (newRental.RentedMovies == null || newRental.RentedMovies.Count < 1)
-        //    {
-        //        rentalExceptions.Add("One or more movies must be rented.");
-        //    }
-
-        //    if (rentalExceptions.Count > 0)
-        //    {
-        //        _logger.LogInformation(" ", rentalExceptions);
-        //        throw new BadRequestException(string.Join(" ", rentalExceptions));
-        //    }
-        //}
-
-        ////Helper validation method to check whether a string is empty or null.
-        //public bool ValidateIfEmptyOrNull(string modelField)
-        //{
-        //    return string.IsNullOrWhiteSpace(modelField);
-        //}
-
-        /////Helper validation method to check whether movies in a rented movie object exist in the database.
-        //public async Task<bool> ValidateRentedMovieIds(RentedMovie addedRental)
-        //{
-        //    var movieList = await GetAllMoviesAsync();
-        //    var movieIdList = new List<int?>();
-        //    foreach (var movie in movieList)
-        //    {
-        //        movieIdList.Add(movie.Id);
-        //    }
-
-        //    if (movieIdList.Contains(addedRental.MovieId))
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Helper method to calculate the total rental price of a rental, based on the individual movies' rental costs and days rented
-        ///// (I'm pretty proud of it)
-        ///// </summary>
-        ///// <param name="newRental"></param>
-        ///// <returns>Total cost of rental</returns>
-        //public async Task<decimal?> RentedMoviePrice(Rental newRental)
-        //{
-        //    var rentedMovies = newRental.RentedMovies;
-        //    decimal? movieRentalCost = 0.00m;
-        //    foreach (var movie in rentedMovies)
-        //    {
-        //        Movie foundMovie = await GetMovieByIdAsync(movie.MovieId);
-        //        decimal? totalIndividualPrice = (foundMovie.DailyRentalCost * movie.DaysRented);
-        //        movieRentalCost += totalIndividualPrice;
-        //    }
-        //    return movieRentalCost;
-        //}
-
-        ///// <summary>
-        ///// Helper method to pull all movies from the database for use in various validation methods.
-        ///// </summary>
-        ///// <returns></returns>
-        //public async Task<IEnumerable<Movie>> GetAllMoviesAsync()
-        //{
-        //    IEnumerable<Movie> movies;
-
-        //    try
-        //    {
-        //        movies = await _movieRepository.GetAllMoviesAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex.Message);
-        //        throw new ServiceUnavailableException("There was a problem connecting to the database.");
-        //    }
-
-        //    return movies;
-        //}
-
-        ///// <summary>
-        ///// Helper validation method using Regex to verify that a price format matches DD.DD
-        ///// </summary>
-        ///// <param name="modelField"></param>
-        ///// <returns>Boolean</returns>
-        //public bool ValidatePriceFormat(string modelField)
-        //{
-        //    Regex priceFormat = new Regex(@"\d+\.\d\d(?!\d)");
-        //    return priceFormat.IsMatch(modelField);
-        //}
-
-        ///// <summary>
-        ///// Helper validation method using Regex to verify that a date format matches YYYY-MM-DD
-        ///// </summary>
-        ///// <param name="modelField"></param>
-        ///// <returns>Boolean</returns>
-        //public bool ValidateDateFormat(string modelField)
-        //{
-        //    Regex dateFormat = new Regex(@"^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$");
-        //    return dateFormat.IsMatch(modelField);
-        //}
+        /// <summary>
+        /// Helper validation method using Regex to verify that a date format matches YYYY-MM-DD
+        /// </summary>
+        /// <param name="modelField"></param>
+        /// <returns>Boolean</returns>
+        public bool ValidateDateFormat(string modelField)
+        {
+            Regex dateFormat = new Regex(@"^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$");
+            return dateFormat.IsMatch(modelField);
+        }
     }
 }

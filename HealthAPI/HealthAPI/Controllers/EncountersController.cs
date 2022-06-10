@@ -46,7 +46,7 @@ namespace HealthAPI.Controllers
 
             var newEncounter = _mapper.MapEncounterDtoToEncounter(encounterToCreate);
             var patientEncounter = await _encounterProvider.CreateEncounterAsync(patientId, newEncounter);
-            var encounterDTO = _mapper.MapEncounterToEncounterlDto(patientEncounter);
+            var encounterDTO = _mapper.MapEncounterToEncounterDto(patientEncounter);
 
             //if (encounterDTO == null)
             //{
@@ -71,12 +71,29 @@ namespace HealthAPI.Controllers
         }
 
         /// <summary>
+        /// Retrieves saved patient encounter object from encounters endpoint based on inputted encounter
+        /// </summary>
+        /// <param name="encounterId"></param>
+        /// <returns>DTO of requested encounter</returns>
+        [HttpGet("{patientId}/encounters/{encounterId}")]
+        public async Task<ActionResult<EncounterDTO>> GetEncounterByIdAsync(int encounterId)
+        {
+            _logger.LogInformation($"Request received for GetEncounterByIdAsync for id: {encounterId}");
+
+            var encounter = await _encounterProvider.GetEncounterByIdAsync(encounterId);
+            var encounterDTO = _mapper.Map<EncounterDTO>(encounter);
+
+            return Ok(encounterDTO);
+        }
+
+        /// <summary>
         /// Updates existing patient encounter based on patient ID, using information packet
         /// </summary>
         /// <param name="encounterId"></param>
         /// <param name="encounterToUpdate"></param>
         /// <returns>Updated rental DTO</returns>
         [HttpPut("{patientId}/encounters/{encounterId}")]
+
         public async Task<ActionResult<EncounterDTO>> UpdateEncounterAsync(
             int encounterId, [FromBody] EncounterDTO encounterToUpdate)
         {

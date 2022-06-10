@@ -9,7 +9,7 @@ namespace HealthAPI.Data.Interfaces
     /// </summary>
     public interface IPatientRepository
     {
-
+        Task<Patient> GetPatientByEmailAsync(Patient patient);
         Task<Patient> CreatePatientAsync(Patient patient);
         Task<IEnumerable<Patient>> GetAllPatientsAsync();
         Task<Patient> GetPatientByIdAsync(int? patientId);

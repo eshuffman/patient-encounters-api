@@ -11,6 +11,7 @@ namespace HealthAPI.Provider.Interfaces
     {
         Task<Encounter> CreateEncounterAsync(int? patientId, Encounter encounter);
         Task<IEnumerable<Encounter>> GetAllEncountersByIdAsync(int? patientId);
+        Task<Encounter> GetEncounterByIdAsync(int encounterId);
         Task<Encounter> UpdateEncounterAsync(int encounterId, Encounter encounter);
 
     }
