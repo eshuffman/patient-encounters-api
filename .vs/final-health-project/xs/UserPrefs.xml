@@ -1,37 +1,53 @@
 ﻿<Properties StartupConfiguration="{0D2A81A4-9D08-4FDE-B355-7323E39A4280}|Default">
   <MonoDevelop.Ide.ItemProperties.HealthAPI PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HealthAPI/HealthAPI.Utilities/HttpResponseExceptions/HttpResponseExceptionValue.cs">
-    <Files>
-      <File FileName="HealthAPI/HealthAPI.Provider/Providers/EncounterProvider.cs" Line="118" Column="1" />
-      <File FileName="HealthAPI/HealthAPI.Data/Repositories/EncounterRepository.cs" Line="45" Column="1" />
-      <File FileName="HealthAPI/HealthAPI.Utilities/HttpResponseExceptions/NotFoundException.cs" Line="13" Column="1" />
-      <File FileName="HealthAPI/HealthAPI.Utilities/HttpResponseExceptions/HttpResponseExceptionValue.cs" Line="17" Column="1" />
-    </Files>
+  <MonoDevelop.Ide.Workbench ActiveDocument="HealthAPI.IntegrationTests/IntegrationTests/EncounterIntegrationTests.cs">
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="final-health-project" expanded="True">
             <Node name="HealthAPI" expanded="True">
               <Node name="Controllers" expanded="True" />
-              <Node name="Mapper" expanded="True" />
+              <Node name="Filters" expanded="True" />
             </Node>
             <Node name="HealthAPI.Data" expanded="True">
-              <Node name="Interfaces" expanded="True" />
-              <Node name="Model" expanded="True" />
+              <Node name="Context" expanded="True" />
+              <Node name="Filters" expanded="True" />
               <Node name="Repositories" expanded="True" />
             </Node>
             <Node name="HealthAPI.DTOs" expanded="True">
               <Node name="Encounters" expanded="True" />
-              <Node name="Patients" expanded="True" />
+            </Node>
+            <Node name="HealthAPI.IntegrationTests" expanded="True">
+              <Node name="Dependencies" expanded="True">
+                <Node name="ProjectDependencies" expanded="True" />
+              </Node>
+              <Node name="IntegrationTests" expanded="True">
+                <Node name="EncounterIntegrationTests.cs" selected="True" />
+              </Node>
+              <Node name="Utilities" expanded="True" />
             </Node>
             <Node name="HealthAPI.Provider" expanded="True">
-              <Node name="Interfaces" expanded="True" />
               <Node name="Providers" expanded="True" />
             </Node>
-            <Node name="HealthAPI.Utilities" expanded="True">
-              <Node name="HttpResponseExceptions" expanded="True">
-                <Node name="HttpResponseExceptionValue.cs" selected="True" />
+            <Node name="HealthAPI.UnitTests" expanded="True">
+              <Node name="Unit Tests" expanded="True" />
+            </Node>
+            <Node name="HealthAPI.Utilities" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="final-health-project" expanded="True">
+            <Node name="HealthAPI.IntegrationTests" expanded="True">
+              <Node name="HealthAPI.IntegrationTests.IntegrationTests" expanded="True">
+                <Node name="EncounterIntegrationTests" expanded="True">
+                  <Node name="UpdateEncounterByIdAsync_Returns201" selected="True" />
+                </Node>
               </Node>
+            </Node>
+            <Node name="HealthAPI.UnitTests" expanded="True">
+              <Node name="HealthAPI.Testing.UnitTests" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -44,8 +60,8 @@
     <BreakpointStore>
       <Breakpoint enabled="false" file="/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Provider/Providers/PatientProvider.cs" relfile="HealthAPI/HealthAPI.Provider/Providers/PatientProvider.cs" line="314" column="1" />
       <Breakpoint enabled="false" file="/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI/Controllers/PatientsController.cs" relfile="HealthAPI/HealthAPI/Controllers/PatientsController.cs" line="41" column="1" />
-      <Breakpoint enabled="false" file="/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Provider/Providers/PatientProvider.cs" relfile="HealthAPI/HealthAPI.Provider/Providers/PatientProvider.cs" line="129" column="1" />
-      <Breakpoint file="/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Provider/Providers/EncounterProvider.cs" relfile="HealthAPI/HealthAPI.Provider/Providers/EncounterProvider.cs" line="114" column="1" />
+      <Breakpoint file="/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Provider/Providers/PatientProvider.cs" relfile="HealthAPI/HealthAPI.Provider/Providers/PatientProvider.cs" line="35" column="1" />
+      <Breakpoint file="/Users/workemily/Desktop/final-project-api/HealthAPI/HealthAPI.Provider/Providers/PatientProvider.cs" relfile="HealthAPI/HealthAPI.Provider/Providers/PatientProvider.cs" line="201" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />

@@ -1,0 +1,1557 @@
+{
+	"info": {
+		"_postman_id": "a38fcae7-d337-404c-8f33-7cd333fa871b",
+		"name": "Health API Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post New Patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"firstName\": \"Darcy\",\n        \"lastName\": \"Fitzwilliam\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/patients",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"patients"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Post New Patient Empty Fields",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 18:56:06 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-08T18:56:06.482485Z\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"errorMessage\": \"Patient first name is required. Patient last name is required. Social security number is required. Email is required. Street is required. City is required. State is required. Postal code is required. Patient age is required. Patient height is required. Pateint weight is required. Insurance provider is required. Patient gender is required.\"\n}"
+				},
+				{
+					"name": "Post New Patient Valid Input",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Bennett\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Female\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 20:45:46 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Location",
+							"value": "/patients"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"firstName\": \"Bennett\",\n    \"lastName\": \"Elizabeth\",\n    \"ssn\": \"122-22-2222\",\n    \"email\": \"broody@longbourne.house\",\n    \"age\": 35,\n    \"height\": 65,\n    \"weight\": 200,\n    \"gender\": \"Female\",\n    \"insurance\": \"ColonialCare\",\n    \"street\": \"longbourne\",\n    \"city\": \"Oxford\",\n    \"state\": \"MS\",\n    \"postal\": \"11224\"\n}"
+				},
+				{
+					"name": "Post New Patient Duplicate Email",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Darcy\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 17:21:17 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-09T17:21:17.853434Z\",\n    \"status\": 409,\n    \"error\": \"Conflict\",\n    \"errorMessage\": \"Email address already exists in the system. Please enter a unique email address.\"\n}"
+				},
+				{
+					"name": "Post New Patient Invalid Information",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"!\",\n        \"lastName\": \"!!\",\n        \"ssn\": \"1222\",\n        \"email\": \"yaylongbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MG\",\n        \"postal\": \"11\",\n        \"age\": 35.2,\n        \"height\": 6.5,\n        \"weight\": 20.1,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Klingon\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 17:34:57 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-09T17:34:58.278942Z\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"errorMessage\": \"Patient first name must contain only alphabetic characters. Patient first name must contain only alphabetic characters. SSN must match format xxx-xx-xxxx. Email must match format x@x.x. State must be valid two-character state code (eg. AL) Postal code must be 5 or 9 digits. Age input must only contain numeric digits. Height input must only contain numeric digits. Weight input must only contain numeric digits. Patient gender must be 'Male', 'Female', or 'Other'.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get All Patients",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/patients",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"patients"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get All Patients Successful Return",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 20:10:56 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\"\n    },\n    {\n        \"id\": 2,\n        \"firstName\": \"Bennett\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\"\n    }\n]"
+				},
+				{
+					"name": "Get All Patients No Patients",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 20:22:44 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "[]"
+				}
+			]
+		},
+		{
+			"name": "Get Patient By Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/patients",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"patients"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Patient By Id Successful Response",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 20:23:43 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"firstName\": \"Bennett\",\n    \"lastName\": \"Elizabeth\",\n    \"ssn\": \"122-22-2222\",\n    \"email\": \"broody@longbourne.house\",\n    \"age\": 35,\n    \"height\": 65,\n    \"weight\": 200,\n    \"insurance\": \"ColonialCare\",\n    \"street\": \"longbourne\",\n    \"city\": \"Oxford\",\n    \"state\": \"MS\",\n    \"postal\": \"11224\"\n}"
+				},
+				{
+					"name": "Get Patient By Id Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/100",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"100"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 20:24:10 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-08T20:24:11.810057Z\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"errorMessage\": \"Patient with id of 100 could not be found.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Encounters By Patient Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/patients/1/encounters",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"patients",
+						"1",
+						"encounters"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Encounters By Patient Id Successful Response",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1/encounters",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1",
+								"encounters"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 04:11:28 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"patientId\": 1,\n        \"notes\": \"V stubborn\",\n        \"visitCode\": \"P0R 1D3\",\n        \"provider\": \"Dr. Phil Collinsworth\",\n        \"billingCode\": \"111.111.111-11\",\n        \"icd10\": \"A22\",\n        \"totalCost\": 22.99,\n        \"copay\": 1,\n        \"chiefComplaint\": \"Heartsickness\",\n        \"pulse\": 65,\n        \"systolic\": 200,\n        \"diastolic\": 100,\n        \"date\": \"2022-02-22\"\n    },\n    {\n        \"id\": 2,\n        \"patientId\": 1,\n        \"notes\": \"Seems happy, may be pregnant\",\n        \"visitCode\": \"P0R 1D3\",\n        \"provider\": \"Dr. Phil Collinsworth\",\n        \"billingCode\": \"111.111.111-11\",\n        \"icd10\": \"A22\",\n        \"totalCost\": 22.99,\n        \"copay\": 1,\n        \"chiefComplaint\": \"Giddiness, lack of menstruation\",\n        \"pulse\": 120,\n        \"systolic\": 200,\n        \"diastolic\": 100,\n        \"date\": \"2022-02-22\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Encounter By Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/patients/1/encounters/10",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"patients",
+						"1",
+						"encounters",
+						"10"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Encounter By Id Existing Encounter",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1/encounters/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1",
+								"encounters",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 10 Jun 2022 04:23:23 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"patientId\": 1,\n    \"notes\": \"V broody today\",\n    \"visitCode\": \"P0R 1D3\",\n    \"provider\": \"Dr. Phil Collinsworth\",\n    \"billingCode\": \"111.111.111-11\",\n    \"icd10\": \"A22\",\n    \"totalCost\": 22.99,\n    \"copay\": 1,\n    \"chiefComplaint\": \"Heartsickness\",\n    \"pulse\": 65,\n    \"systolic\": 200,\n    \"diastolic\": 100,\n    \"date\": \"2022-02-22\"\n}"
+				},
+				{
+					"name": "Get Encounter By Id Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Fitzwilliam\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 75,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Male\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1/encounters/10",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1",
+								"encounters",
+								"10"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 10 Jun 2022 04:28:22 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-10T04:28:22.60109Z\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"errorMessage\": \"Encounter with id of 10 not found.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Patient By Id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"firstName\": \"Bennett\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Female\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/patients",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"patients"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Update Patient By Id Successful Update",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"id\": 1,\n        \"firstName\": \"Darcy\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"inlove@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Female\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 20:47:20 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"firstName\": \"Darcy\",\n    \"lastName\": \"Elizabeth\",\n    \"ssn\": \"122-22-2222\",\n    \"email\": \"inlove@longbourne.house\",\n    \"age\": 35,\n    \"height\": 65,\n    \"weight\": 200,\n    \"gender\": \"Female\",\n    \"insurance\": \"ColonialCare\",\n    \"street\": \"longbourne\",\n    \"city\": \"Oxford\",\n    \"state\": \"MS\",\n    \"postal\": \"11224\"\n}"
+				},
+				{
+					"name": "Update Patient By Id Not Found",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"id\": 100,\n        \"firstName\": \"Darcy\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"inlove@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Female\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/100",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"100"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 20:48:01 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-08T20:48:01.701959Z\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"errorMessage\": \"Patient with id of 100 not found.\"\n}"
+				},
+				{
+					"name": "Update Patient By Id Invalid Input",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"id\": 1\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 21:32:49 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-08T21:32:49.383559Z\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"errorMessage\": \"Patient first name is required. Patient last name is required. Social security number is required. Email is required. Street is required. City is required. State is required. Postal code is required. Patient age is required. Patient height is required. Pateint weight is required. Insurance provider is required. Patient gender is required.\"\n}"
+				},
+				{
+					"name": "Update Patient By Id Duplicate Email",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Bennett\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"elizabeth@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Female\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1"
+							]
+						}
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 18:07:56 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-09T18:07:57.814964Z\",\n    \"status\": 409,\n    \"error\": \"Conflict\",\n    \"errorMessage\": \"Email address already exists in the system. Please enter a unique email address.\"\n}"
+				},
+				{
+					"name": "Update Patient By Id Changing Id Not Allowed",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"id\": 3,\n        \"firstName\": \"Bennett\",\n        \"lastName\": \"Darcy\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"darcy@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Female\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 18:09:26 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-09T18:09:26.946516Z\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"errorMessage\": \"Patient ID cannot be changed.\"\n}"
+				},
+				{
+					"name": "Update Patient By Id Invalid Input II",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"id\": 1,\n        \"firstName\": \"!\",\n        \"lastName\": \"!!\",\n        \"ssn\": \"122-22-\",\n        \"email\": \"darcylongbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MLS\",\n        \"postal\": \"1\",\n        \"age\": 35.2,\n        \"height\": 65.2,\n        \"weight\": 200.2,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Muppet\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 18:13:00 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-09T18:13:01.22684Z\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"errorMessage\": \"Patient first name must contain only alphabetic characters. Patient first name must contain only alphabetic characters. SSN must match format xxx-xx-xxxx. Email must match format x@x.x. State must be valid two-character state code (eg. AL) Postal code must be 5 or 9 digits. Age input must only contain numeric digits. Height input must only contain numeric digits. Weight input must only contain numeric digits. Patient gender must be 'Male', 'Female', or 'Other'.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete Patient By Id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"firstName\": \"Bennett\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Female\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/patients/1",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"patients",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Delete Patient By Id Successful Response",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Bennett\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Female\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 21:45:05 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						}
+					],
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Delete Patient By Id Not Found",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Bennett\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Female\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/10",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"10"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 08 Jun 2022 21:55:05 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "No patient with ID: 10 exists in the database"
+				},
+				{
+					"name": "Delete Patient By Id With Existing Encounters",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"firstName\": \"Bennett\",\n        \"lastName\": \"Elizabeth\",\n        \"ssn\": \"122-22-2222\",\n        \"email\": \"broody@longbourne.house\",\n        \"street\": \"longbourne\",\n        \"city\": \"Oxford\",\n        \"state\": \"MS\",\n        \"postal\": \"11224\",\n        \"age\": 35,\n        \"height\": 65,\n        \"weight\": 200,\n        \"insurance\": \"ColonialCare\",\n        \"gender\": \"Female\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1"
+							]
+						}
+					},
+					"status": "Conflict",
+					"code": 409,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 10 Jun 2022 04:03:30 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-10T04:03:31.01889Z\",\n    \"status\": 409,\n    \"error\": \"Conflict\",\n    \"errorMessage\": \"Patient has associated encounters and cannot be deleted.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Post New Encounter",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"patientId\": 1,\n        \"notes\": \"V broody today\",\n        \"visitCode\": \"P0R 1D3\",\n        \"provider\": \"Dr. Phil Collinsworth\",\n        \"billingCode\": \"111.111.111-11\",\n        \"icd10\": \"A22\",\n        \"totalCost\": 22.99,\n        \"copay\": 1.00,\n        \"chiefComplaint\": \"Heartsickness\",\n        \"pulse\": 65,\n        \"systolic\": 200,\n        \"diastolic\": 100,\n        \"date\": \"2022-02-22\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/patients/1/encounters",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"patients",
+						"1",
+						"encounters"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Post New Encounter Valid Input",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"patientId\": 1,\n        \"notes\": \"V stubborn\",\n        \"visitCode\": \"P0R 1D3\",\n        \"provider\": \"Dr. Phil Collinsworth\",\n        \"billingCode\": \"111.111.111-11\",\n        \"icd10\": \"A22\",\n        \"totalCost\": 22.99,\n        \"copay\": 1.00,\n        \"chiefComplaint\": \"Heartsickness\",\n        \"pulse\": 65,\n        \"systolic\": 200,\n        \"diastolic\": 100,\n        \"gender\": \"Female\",\n        \"date\": \"2022-02-22\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1/encounters",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1",
+								"encounters"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 03:45:30 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Location",
+							"value": "/1/encounters"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"patientId\": 1,\n    \"notes\": \"V stubborn\",\n    \"visitCode\": \"P0R 1D3\",\n    \"provider\": \"Dr. Phil Collinsworth\",\n    \"billingCode\": \"111.111.111-11\",\n    \"icd10\": \"A22\",\n    \"totalCost\": 22.99,\n    \"copay\": 1,\n    \"chiefComplaint\": \"Heartsickness\",\n    \"pulse\": 65,\n    \"systolic\": 200,\n    \"diastolic\": 100,\n    \"date\": \"2022-02-22\"\n}"
+				},
+				{
+					"name": "Post New Encounter Nonexistent Patient",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"patientId\": 10,\n        \"notes\": \"Happy\",\n        \"visitCode\": \"P0R 1D3\",\n        \"provider\": \"Dr. Phil Collinsworth\",\n        \"billingCode\": \"111.111.111-11\",\n        \"icd10\": \"A22\",\n        \"totalCost\": 22.99,\n        \"copay\": 1.00,\n        \"chiefComplaint\": \"Heartsickness\",\n        \"pulse\": 65,\n        \"systolic\": 200,\n        \"diastolic\": 100,\n        \"gender\": \"Male\",\n        \"date\": \"2022-02-22\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/10/encounters",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"10",
+								"encounters"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 22:09:34 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-09T22:09:35.428605Z\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"errorMessage\": \"Patient with ID of 10 could not be found in the database.\"\n}"
+				},
+				{
+					"name": "Post New Encounter Invalid Input",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"patientId\": 1,\n        \"notes\": \"Happy\",\n        \"visitCode\": \"P0R 1D\",\n        \"billingCode\": \"111.111.111\",\n        \"icd10\": \"A222\",\n        \"totalCost\": 22.999,\n        \"copay\": 1.001,\n        \"pulse\": 65.1,\n        \"systolic\": 200.3,\n        \"diastolic\": 100.8,\n        \"date\": \"01/01/2001\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1/encounters",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1",
+								"encounters"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 10 Jun 2022 03:37:00 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-10T03:37:01.017742Z\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"errorMessage\": \"Visit code must match format of LDL DLD (eg. A1A 2B2). Provider is required. Billing code must match format of DDD.DDD.DDD-DD (eg. 123.123.123-12). ICD10 must match format of LDD (eg. A12). Total cost must match format of XX.XX. Copay must match format of XX.XX Chief complaint is required. Date must match format of YYYY-MM-DD. Pulse must be a whole integer. Systolic must be a whole integer. Diastolic must be a whole integer.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Encounter By Id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"patientId\": 1,\n        \"notes\": \"Grumpus\",\n        \"visitCode\": \"P0R 1D3\",\n        \"provider\": \"Dr. Phil Collinsworth\",\n        \"billingCode\": \"111.111.111-11\",\n        \"icd10\": \"A22\",\n        \"totalCost\": 22.99,\n        \"copay\": 1.00,\n        \"chiefComplaint\": \"Disgust\",\n        \"pulse\": 165,\n        \"systolic\": 200,\n        \"diastolic\": 100,\n        \"gender\": \"Male\",\n        \"date\": \"2021-02-22\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/patients/1/encounters/2",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"patients",
+						"1",
+						"encounters",
+						"2"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Update Encounter By Id Valid Input",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"patientId\": 1,\n        \"notes\": \"Grumpus\",\n        \"visitCode\": \"P0R 1D3\",\n        \"provider\": \"Dr. Phil Collinsworth\",\n        \"billingCode\": \"111.111.111-11\",\n        \"icd10\": \"A22\",\n        \"totalCost\": 22.99,\n        \"copay\": 1.00,\n        \"chiefComplaint\": \"Disgust\",\n        \"pulse\": 165,\n        \"systolic\": 200,\n        \"diastolic\": 100,\n        \"gender\": \"Male\",\n        \"date\": \"2021-02-22\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1/encounters/2",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1",
+								"encounters",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 04:36:39 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 2,\n    \"patientId\": 1,\n    \"notes\": \"Grumpus\",\n    \"visitCode\": \"P0R 1D3\",\n    \"provider\": \"Dr. Phil Collinsworth\",\n    \"billingCode\": \"111.111.111-11\",\n    \"icd10\": \"A22\",\n    \"totalCost\": 22.99,\n    \"copay\": 1,\n    \"chiefComplaint\": \"Disgust\",\n    \"pulse\": 165,\n    \"systolic\": 200,\n    \"diastolic\": 100,\n    \"date\": \"2021-02-22\"\n}"
+				},
+				{
+					"name": "Update Encounter By Id Invalid Encounter Id",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"patientId\": 1,\n        \"notes\": \"Grumpus\",\n        \"visitCode\": \"P0R 1D3\",\n        \"provider\": \"Dr. Phil Collinsworth\",\n        \"billingCode\": \"111.111.111-11\",\n        \"icd10\": \"A22\",\n        \"totalCost\": 22.99,\n        \"copay\": 1.00,\n        \"chiefComplaint\": \"Disgust\",\n        \"pulse\": 165,\n        \"systolic\": 200,\n        \"diastolic\": 100,\n        \"gender\": \"Male\",\n        \"date\": \"2021-02-22\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1/encounters/20",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1",
+								"encounters",
+								"20"
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 09 Jun 2022 04:38:55 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-09T04:38:56.206678Z\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"errorMessage\": \"Encounter with id of 20 not found.\"\n}"
+				},
+				{
+					"name": "Update Encounter By Id Invalid Input",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"patientId\": 2,\n        \"visitCode\": \"PR 1D3\",\n        \"billingCode\": \"111.111.111\",\n        \"icd10\": \"A2\",\n        \"totalCost\": 22.999,\n        \"copay\": 1.001,\n        \"pulse\": 165.2,\n        \"systolic\": 200.9,\n        \"diastolic\": 100.6,\n        \"date\": \"01/22/20\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/patients/1/encounters/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"patients",
+								"1",
+								"encounters",
+								"1"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 10 Jun 2022 03:45:30 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Kestrel"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"timestamp\": \"2022-06-10T03:45:30.397187Z\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"errorMessage\": \"Patient ID must match ID of patient encounter is being recorded for. Visit code must match format of LDL DLD (eg. A1A 2B2). Provider is required. Billing code must match format of DDD.DDD.DDD-DD (eg. 123.123.123-12). ICD10 must match format of LDD (eg. A12). Total cost must match format of XX.XX. Copay must match format of XX.XX Chief complaint is required. Date must match format of YYYY-MM-DD. Pulse must be a whole integer. Systolic must be a whole integer. Diastolic must be a whole integer.\"\n}"
+				}
+			]
+		}
+	]
+}

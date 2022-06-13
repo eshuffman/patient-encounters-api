@@ -1,254 +1,347 @@
-﻿//using MovieRentalsAPI.IntegrationTesting.Utilities;
-//using Microsoft.AspNetCore.Mvc.Testing;
-//using System.Net;
-//using System.Net.Http;
-//using System.Net.Http.Json;
-//using System.Threading.Tasks;
-//using Xunit;
-//using MovieRentalsAPI.DTOs;
+﻿using HealthAPI.IntegrationTests.Utilities;
+using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using Xunit;
+using HealthAPI.DTOs;
 
-//namespace MovieRentalsAPI.IntegrationTesting.IntegrationTests
-//{
-//    [Collection("Sequential")]
-//    public class MovieIntegrationTests : IClassFixture<CustomWebApplicationFactory>
-//    {
-//        private readonly HttpClient _client;//Postman in code
+namespace HealthAPI.IntegrationTests.IntegrationTests
+{
+    [Collection("Sequential")]
+    public class PatientIntegrationTests : IClassFixture<CustomWebApplicationFactory>
+    {
+        private readonly HttpClient _client;//Postman in code
 
-//        public MovieIntegrationTests(CustomWebApplicationFactory factory)
-//        {
-//            _client = factory.CreateClient(new WebApplicationFactoryClientOptions//initialize the above
-//            {
-//                AllowAutoRedirect = false
-//            });
-//        }
+        public PatientIntegrationTests(CustomWebApplicationFactory factory)
+        {
+            _client = factory.CreateClient(new WebApplicationFactoryClientOptions//initialize the above
+            {
+                AllowAutoRedirect = false
+            });
+        }
 
-//        [Fact]
-//        public async Task GetAllMoviesAsync_Returns200()
-//        {
+        [Fact]
+        public async Task GetAllPatientsAsync_Returns200()
+        {
 
-//            var response = await _client.GetAsync("/movies");
-//            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var response = await _client.GetAsync("/patients");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-//        }
+        }
 
-//        [Fact]
-//        public async Task CreateMovieAsync_Returns201()
-//        {
-//            var movieDTO = new MovieDTO
-//            {
-//                Sku = "WESAND-2001",
-//                Title = "The Darjeeling Limited",
-//                Genre = "Twee",
-//                Director = "Wes Anderson",
-//                DailyRentalCost = 1.99m
-//            };
 
-//            var movieDTOJson = JsonContent.Create(movieDTO);
+        [Fact]
+        public async Task CreatePatientAsync_Returns201()
+        {
+            var patientDTO = new PatientDTO
+            {
+                Id = 5,
+                FirstName = "Fitzwilliam",
+                LastName = "Darcy",
+                Ssn = "123-12-1234",
+                Email = "manohouse@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 35,
+                Height = 72,
+                Weight = 200,
+                Insurance = "Queen's Care",
+                Gender = "Male",
+            };
 
-//            var response = await _client.PostAsync("/movies", movieDTOJson);
-//            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            var patientDTOJson = JsonContent.Create(patientDTO);
 
-//        }
+            var response = await _client.PostAsync("/patients", patientDTOJson);
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
-//        [Fact]
-//        public async Task CreateMovieAsync_WithDuplicateSku_Returns409()
-//        {
-//            var movieDTO = new MovieDTO
-//            {
-//                Sku = "WESAND-2001",
-//                Title = "The Darjeeling Limited",
-//                Genre = "Twee",
-//                Director = "Wes Anderson",
-//                DailyRentalCost = 1.99m
-//            };
+        }
 
-//            var movieDTOJson = JsonContent.Create(movieDTO);
+        [Fact]
+        public async Task CreatePatientAsync_WithDuplicateEmail_Returns409()
+        {
+            var patientDTO = new PatientDTO
+            {
+                Id = 1,
+                FirstName = "Fitzwilliam",
+                LastName = "Darcy",
+                Ssn = "123-12-1234",
+                Email = "prideful@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 35,
+                Height = 72,
+                Weight = 200,
+                Insurance = "Queen's Care",
+                Gender = "Male",
+            };
 
-//            var response = await _client.PostAsync("/movies", movieDTOJson);
-//            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+            var patientDTOJson = JsonContent.Create(patientDTO);
 
-//        }
+            var response = await _client.PostAsync("/patients", patientDTOJson);
+            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
 
-//        [Fact]
-//        public async Task CreateMovieAsync_WithInvalidInformation_Returns400()
-//        {
-//            var movieDTO = new MovieDTO
-//            {
-//                Sku = "WESAND-20012",
-//                Title = "The Darjeeling Limited",
-//                Genre = "Twee",
-//                Director = "Wes Anderson",
-//                DailyRentalCost = 1.992m
-//            };
+        }
 
-//            var movieDTOJson = JsonContent.Create(movieDTO);
+        [Fact]
+        public async Task CreatePatientAsync_WithInvalidInformation_Returns400()
+        {
+            var patientDTO = new PatientDTO
+            {
+                Id = 5,
+                FirstName = "2",
+                LastName = "2",
+                Ssn = "1",
+                Email = "pridefullongbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "1",
+                Age = 35.2,
+                Height = -72,
+                Weight = -200,
+                Insurance = "Queen's Care",
+                Gender = "Muppet",
+            };
 
-//            var response = await _client.PostAsync("/movies", movieDTOJson);
-//            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            var patientDTOJson = JsonContent.Create(patientDTO);
 
-//        }
+            var response = await _client.PostAsync("/patients", patientDTOJson);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-//        [Fact]
-//        public async Task GetMovieByIdAsync_WithExistingId_Returns200()
-//        {
+        }
 
-//            var response = await _client.GetAsync("/movies/1");
-//            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        [Fact]
+        public async Task GetPatientByIdAsync_WithExistingId_Returns200()
+        {
 
-//        }
+            var response = await _client.GetAsync("/patients/1");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-//        [Fact]
-//        public async Task GetMovieByIdAsync_WithNonexistentId_Returns404()
-//        {
+        }
 
-//            var response = await _client.GetAsync("/movies/100");
-//            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        [Fact]
+        public async Task GetPatientByIdAsync_WithNonexistentId_Returns404()
+        {
 
-//        }
-//        [Fact]
-//        public async Task UpdateMovieByIdAsync_Returns201()
-//        {
-//            var movieDTO = new MovieDTO
-//            {
-//                Id = 5,
-//                Sku = "WESAND-2022",
-//                Title = "The Karnataka Limited",
-//                Genre = "Twee",
-//                Director = "Wes Andersson",
-//                DailyRentalCost = 1.99m
-//            };
+            var response = await _client.GetAsync("/patients/100");
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
-//            var updatedMovieDTO = new MovieDTO
-//            {
-//                Sku = "WESAND-2021",
-//                Title = "The Kolkata Limited",
-//                Genre = "Twee",
-//                Director = "Wes Andersson",
-//                DailyRentalCost = 1.99m
-//            };
+        }
+        [Fact]
+        public async Task UpdatePatientByIdAsync_Returns201()
+        {
+            var patientDTO = new PatientDTO
+            {
+                Id = 10,
+                FirstName = "Charlotte",
+                LastName = "Collins",
+                Ssn = "123-12-1234",
+                Email = "patient@longbourne.house",
+                Street = "123 Lady Catherine Manor",
+                City = "DeBurgh",
+                State = "TN",
+                Postal = "12321",
+                Age = 35,
+                Height = 72,
+                Weight = 200,
+                Insurance = "Queen's Care",
+                Gender = "Female",
+            };
 
-//            var movieDTOJson = JsonContent.Create(movieDTO);
-//            await _client.PostAsync("/movies", movieDTOJson);
-//            var existingMovie = await (await _client.GetAsync("/movies/5")).Content.ReadAsAsync<MovieDTO>();
-//            Assert.Equal("The Karnataka Limited", existingMovie.Title);
-//            var response = await _client.PutAsJsonAsync("/movies/5", updatedMovieDTO);
-//            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var updatedPatientDTO = new PatientDTO
+            {
+                Id = 10,
+                FirstName = "Charlotte",
+                LastName = "Collins",
+                Ssn = "123-12-1234",
+                Email = "patient@longbourne.house",
+                Street = "123 Lady Catherine Manor",
+                City = "DeBurgh",
+                State = "TN",
+                Postal = "12321",
+                Age = 35,
+                Height = 62,
+                Weight = 110,
+                Insurance = "Queen's Care",
+                Gender = "Female",
+            };
 
-//        }
+            var patientDTOJson = JsonContent.Create(patientDTO);
+            await _client.PostAsync("/patients", patientDTOJson);
+            var existingPatient = await (await _client.GetAsync("/patients/10")).Content.ReadAsAsync<PatientDTO>();
+            Assert.Equal("Queen's Care", existingPatient.Insurance);
+            var response = await _client.PutAsJsonAsync("/patients/10", updatedPatientDTO);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-//        [Fact]
-//        public async Task UpdateMovieByIdAsync_WithDuplicateSku_Returns409()
-//        {
-//            var movieDTO = new MovieDTO
-//            {
-//                Id = 5,
-//                Sku = "WESAND-2012",
-//                Title = "The Karnataka Limited",
-//                Genre = "Twee",
-//                Director = "Wes Anderson",
-//                DailyRentalCost = 1.99m
-//            };
+        }
 
-//            var secondMovieDTO = new MovieDTO
-//            {
-//                Id = 22,
-//                Sku = "WESAND-2552",
-//                Title = "The Hydrabad Limited",
-//                Genre = "Twee",
-//                Director = "Wes Anderson",
-//                DailyRentalCost = 1.99m
-//            };
+        [Fact]
+        public async Task UpdatePatientByIdAsync_WithDuplicateEmail_Returns409()
+        {
+            var patientDTO = new PatientDTO
+            {
+                Id = 15,
+                FirstName = "Lydia",
+                LastName = "Bennett-Wickham",
+                Ssn = "123-12-1234",
+                Email = "thebestbennetdaughter@longbourne.house",
+                Street = "123 Elopement Blvd",
+                City = "London",
+                State = "TN",
+                Postal = "12321",
+                Age = 16,
+                Height = 64,
+                Weight = 132,
+                Insurance = "Queen's Care",
+                Gender = "Female",
+            };
 
-//            var updatedMovieDTO = new MovieDTO
-//            {
-//                Sku = "WESAND-2012",
-//                Title = "The Kolkata Limited",
-//                Genre = "Twee",
-//                Director = "Wes Andersson",
-//                DailyRentalCost = 1.99m
-//            };
+            var secondPatientDTO = new PatientDTO
+            {
+                Id = 16,
+                FirstName = "Mister",
+                LastName = "Wickham",
+                Ssn = "123-12-1234",
+                Email = "cad@militia.mil",
+                Street = "123 Elopement Blvd",
+                City = "London",
+                State = "TN",
+                Postal = "12321",
+                Age = 35,
+                Height = 72,
+                Weight = 200,
+                Insurance = "Queen's Care",
+                Gender = "Male",
+            };
 
-//            var movieDTOJson = JsonContent.Create(movieDTO);
-//            await _client.PostAsync("/movies", movieDTOJson);
-//            var existingMovie = await (await _client.GetAsync("/movies/5")).Content.ReadAsAsync<MovieDTO>();
-//            Assert.Equal("The Karnataka Limited", existingMovie.Title);
+            var updatedPatientDTO = new PatientDTO
+            {
+                Id = 15,
+                FirstName = "Lydia",
+                LastName = "Bennett-Wickham",
+                Ssn = "123-12-1234",
+                Email = "cad@militia.mil",
+                Street = "123 Elopement Blvd",
+                City = "London",
+                State = "TN",
+                Postal = "12321",
+                Age = 16,
+                Height = 64,
+                Weight = 132,
+                Insurance = "Queen's Care",
+                Gender = "Female",
+            };
 
-//            var secondMovieDTOJson = JsonContent.Create(secondMovieDTO);
-//            await _client.PostAsync("/movies", secondMovieDTOJson);
-//            var secondExistingMovie = await (await _client.GetAsync("/movies/22")).Content.ReadAsAsync<MovieDTO>();
-//            Assert.Equal("The Hydrabad Limited", secondExistingMovie.Title);
+            var patientDTOJson = JsonContent.Create(patientDTO);
+            await _client.PostAsync("/patients", patientDTOJson);
+            var existingPatient = await (await _client.GetAsync("/patients/15")).Content.ReadAsAsync<PatientDTO>();
+            Assert.Equal("Queen's Care", existingPatient.Insurance);
 
-//            var response = await _client.PutAsJsonAsync("/movies/22", updatedMovieDTO);
-//            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+            var secondPatientDTOJson = JsonContent.Create(secondPatientDTO);
+            await _client.PostAsync("/patients", secondPatientDTOJson);
+            var secondExistingPatient = await (await _client.GetAsync("/patients/16")).Content.ReadAsAsync<PatientDTO>();
+            Assert.Equal("Queen's Care", existingPatient.Insurance);
 
-//        }
+            var response = await _client.PutAsJsonAsync("/patients/15", updatedPatientDTO);
+            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
 
-//        [Fact]
-//        public async Task UpdateMovieByIdAsync_WithInvalidInformation_Returns400()
-//        {
-//            var movieDTO = new MovieDTO
-//            {
-//                Id = 6,
-//                Sku = "WESAND-2062",
-//                Title = "The Karnataka Limited",
-//                Genre = "Twee",
-//                Director = "Wes Andersson",
-//                DailyRentalCost = 1.99m
-//            };
+        }
 
-//            var updatedMovieDTO = new MovieDTO
-//            {
-//                Sku = "WESAND-20221",
-//                Title = "The Kolkata Limited",
-//                Genre = "Twee",
-//                Director = "Wes Andersson",
-//                DailyRentalCost = 1.993m
-//            };
+        [Fact]
+        public async Task UpdatePatientByIdAsync_WithInvalidInformation_Returns400()
+        {
+            var patientDTO = new PatientDTO
+            {
+                Id = 20,
+                FirstName = "Georgiana",
+                LastName = "Darcy",
+                Ssn = "123-12-1234",
+                Email = "sweetiepianolover@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 20,
+                Height = 61,
+                Weight = 102,
+                Insurance = "Queen's Care",
+                Gender = "Female",
+            };
 
-//            var movieDTOJson = JsonContent.Create(movieDTO);
-//            await _client.PostAsync("/movies", movieDTOJson);
-//            var existingMovie = await (await _client.GetAsync("/movies/6")).Content.ReadAsAsync<MovieDTO>();
-//            Assert.Equal("The Karnataka Limited", existingMovie.Title);
-//            var response = await _client.PutAsJsonAsync("/movies/6", updatedMovieDTO);
-//            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            var updatedPatientDTO = new PatientDTO
+            {
+                Id = 20,
+                FirstName = "3",
+                LastName = "3",
+                Ssn = "12",
+                Email = "sweets",
+                State = "TNT",
+                Postal = "1",
+                Age = 3.5,
+                Height = 7.2,
+                Weight = -200,
+                Gender = "Tinkerbell",
+            };
 
-//        }
+            var patientDTOJson = JsonContent.Create(patientDTO);
+            await _client.PostAsync("/patients", patientDTOJson);
+            var existingPatient = await (await _client.GetAsync("/patients/20")).Content.ReadAsAsync<PatientDTO>();
+            Assert.Equal("Queen's Care", existingPatient.Insurance);
+            var response = await _client.PutAsJsonAsync("/patients/20", updatedPatientDTO);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-//        [Fact]
-//        public async Task UpdateMovieByIdAsync_WithNonexistentId_Returns404()
-//        {
-//            var movieDTO = new MovieDTO
-//            {
-//                Sku = "WESAND-2003",
-//                Title = "The Goa Limited",
-//                Genre = "Twee",
-//                Director = "Wes Anderson",
-//                DailyRentalCost = 1.99m
-//            };
+        }
 
-//            var movieDTOJson = JsonContent.Create(movieDTO);
+        [Fact]
+        public async Task UpdatePatientByIdAsync_WithNonexistentId_Returns404()
+        {
+            var patientDTO = new PatientDTO
+            {
+                FirstName = "Georgiana",
+                LastName = "Darcy",
+                Ssn = "123-12-1234",
+                Email = "sweetiepianolover@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 20,
+                Height = 61,
+                Weight = 102,
+                Insurance = "Queen's Care",
+                Gender = "Female",
+            };
 
-//            var response = await _client.PutAsync("/movies/100", movieDTOJson);
-//            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            var patientDTOJson = JsonContent.Create(patientDTO);
 
-//        }
+            var response = await _client.PutAsync("/patients/100", patientDTOJson);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
-//        [Fact]
-//        public async Task DeleteMovieByIdAsync_WithExistingId_Returns204()
-//        {
+        }
 
-//            var response = await _client.DeleteAsync("/movies/1");
-//            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        [Fact]
+        public async Task DeletePatientByIdAsync_WithExistingId_Returns204()
+        {
 
-//        }
+            var response = await _client.DeleteAsync("/patients/3");
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 
-//        [Fact]
-//        public async Task DeleteMovieByIdAsync_WithNonexistentId_Returns404()
-//        {
+        }
 
-//            var response = await _client.DeleteAsync("/movies/1");
-//            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        [Fact]
+        public async Task DeletePatientByIdAsync_WithNonexistentId_Returns404()
+        {
 
-//        }
-//    }
-//}
+            var response = await _client.DeleteAsync("/patients/100");
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+        }
+
+    }
+}

@@ -1,340 +1,375 @@
-﻿//using MovieRentalsAPI.Data.Interfaces;
-//using Microsoft.Extensions.Logging;
-//using Moq;
-//using System;
-//using System.Collections.Generic;
-//using System.Threading.Tasks;
-//using Xunit;
-//using MovieRentalsAPI.Provider.Providers;
-//using MovieRentalsAPI.Utilities.HttpResponseExceptions;
-//using FluentAssertions;
+﻿using HealthAPI.Data.Interfaces;
+using Microsoft.Extensions.Logging;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Xunit;
+using HealthAPI.Provider.Providers;
+using HealthAPI.Utilities.HttpResponseExceptions;
+using FluentAssertions;
 
-//namespace MovieRentalsAPI.Testing.UnitTests
-//{
-//    public class RentalProviderTests
-//    {
-//        private readonly Mock<IRentalRepository> rentalRepositoryStub;
-//        private readonly Mock<IMovieRepository> movieRepositoryStub;
-//        private readonly Mock<ILogger<RentalProvider>> loggerStub;
-//        private readonly Mock<ILogger<MovieProvider>> movieLoggerStub;
-//        private readonly RentalProvider rentalProvider;
-//        private readonly MovieProvider movieProvider;
+namespace HealthAPI.Testing.UnitTests
+{
+    public class EncounterProviderTests
+    {
+        private readonly Mock<IEncounterRepository> encounterRepositoryStub;
+        private readonly Mock<IPatientRepository> patientRepositoryStub;
+        private readonly Mock<ILogger<EncounterProvider>> loggerStub;
+        private readonly Mock<ILogger<PatientProvider>> patientLoggerStub;
+        private readonly EncounterProvider encounterProvider;
+        private readonly PatientProvider patientProvider;
 
-//        private readonly Data.Model.Movie testMovie1;
-//        private readonly Data.Model.Movie testMovie2;
-//        private readonly Data.Model.Movie testMovie3;
-//        private readonly Data.Model.Rental testRental1;
-//        private readonly Data.Model.Rental testRental2;
-//        private readonly Data.Model.Rental testRental3;
-//        private readonly Data.Model.Rental testRental;
-//        private readonly Data.Model.Rental testRentalAltered;
-//        private readonly Data.Model.Rental badTestRentalAltered;
-//        private readonly Data.Model.Rental badTestRental;
-//        private readonly Data.Model.Rental badTestRental2;
-//        private readonly Data.Model.Rental badTestRental3;
-//        private readonly Data.Model.Rental badTestRental4;
-//        private readonly List<Data.Model.RentedMovie> testRentedMovies;
-//        private readonly List<Data.Model.RentedMovie> badTestRentedMovies;
-//        private readonly List<Data.Model.RentedMovie> badTestRentedMovies2;
-//        private readonly List<Data.Model.Movie> testMovieDatabase;
-//        private readonly List<Data.Model.Rental> testRentalDatabase;
+        private readonly Data.Model.Patient testPatient1;
+        private readonly Data.Model.Patient testPatient2;
+        private readonly Data.Model.Patient testPatient3;
+        private readonly Data.Model.Encounter testEncounter1;
+        private readonly Data.Model.Encounter testEncounter2;
+        private readonly Data.Model.Encounter testEncounter3;
+        private readonly Data.Model.Encounter testEncounterAltered;
+
+        private readonly List<Data.Model.Patient> testPatientDatabase;
+        private readonly List<Data.Model.Encounter> testEncounterDatabase;
 
 
-//        public RentalProviderTests()
-//        {
-//            // Arrange
-//            // Create some movies 
-//            rentalRepositoryStub = new Mock<IRentalRepository>();
-//            movieRepositoryStub = new Mock<IMovieRepository>();
-//            loggerStub = new Mock<ILogger<RentalProvider>>();
-//            movieLoggerStub = new Mock<ILogger<MovieProvider>>();
-//            rentalProvider = new RentalProvider(rentalRepositoryStub.Object, movieRepositoryStub.Object, loggerStub.Object);
-//            movieProvider = new MovieProvider(movieRepositoryStub.Object, movieLoggerStub.Object);
+        public EncounterProviderTests()
+        {
+            // Arrange
+            // Create some patients 
+            encounterRepositoryStub = new Mock<IEncounterRepository>();
+            patientRepositoryStub = new Mock<IPatientRepository>();
+            loggerStub = new Mock<ILogger<EncounterProvider>>();
+            patientLoggerStub = new Mock<ILogger<PatientProvider>>();
+            encounterProvider = new EncounterProvider(encounterRepositoryStub.Object, patientRepositoryStub.Object, loggerStub.Object);
+            patientProvider = new PatientProvider(patientRepositoryStub.Object, encounterRepositoryStub.Object, patientLoggerStub.Object);
 
-//            testMovie1 = new Data.Model.Movie { Id = 1, Sku = "WESAND-2006", Title = "The Assam Limited", Genre = "Twee", Director = "Wes Anderson", DailyRentalCost = 1.00m };
-//            testMovie2 = new Data.Model.Movie { Id = 2, Sku = "WESAND-2008", Title = "The Kolkata Limited", Genre = "Twee", Director = "Wes Anderson", DailyRentalCost = 1.00m };
-//            testMovie3 = new Data.Model.Movie { Id = 3, Sku = "WESAND-2009", Title = "The Delhi Limited", Genre = "Twee", Director = "Wes Anderson", DailyRentalCost = 1.00m };
+            testPatient1 = new Data.Model.Patient
+            {
+                Id = 1,
+                FirstName = "Fitzwilliam",
+                LastName = "Darcy",
+                Ssn = "123-12-1234",
+                Email = "prideful@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 35,
+                Height = 72,
+                Weight = 200,
+                Insurance = "Queen's Care",
+                Gender = "Male",
+            };
 
-//            testMovieDatabase = new List<Data.Model.Movie> { testMovie1, testMovie2, testMovie3 };
-//            testRentalDatabase = new List<Data.Model.Rental> { testRental1, testRental2, testRental3 };
+            testPatient2 = new Data.Model.Patient
+            {
+                Id = 2,
+                FirstName = "Elizabeth",
+                LastName = "Bennett",
+                Ssn = "123-12-1234",
+                Email = "sunny@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 21,
+                Height = 64,
+                Weight = 120,
+                Insurance = "Queen's Care",
+                Gender = "Female",
+            };
 
-//            testRentedMovies = new List<Data.Model.RentedMovie> {
-//                new Data.Model.RentedMovie { MovieId = 1, DaysRented = 1 },
-//                new Data.Model.RentedMovie { MovieId = 2, DaysRented = 1 }
-//            };
+            testPatient3 = new Data.Model.Patient
+            {
+                Id = 3,
+                FirstName = "Mary",
+                LastName = "Bennett",
+                Ssn = "123-12-1234",
+                Email = "misunderstood@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 18,
+                Height = 63,
+                Weight = 128,
+                Insurance = "Queen's Care",
+                Gender = "Other",
+            };
 
-//            badTestRentedMovies = new List<Data.Model.RentedMovie> {
-//                new Data.Model.RentedMovie { DaysRented = 1, MovieId = 1 },
-//                new Data.Model.RentedMovie { DaysRented = -1 },
-//                new Data.Model.RentedMovie { }
-//            };
+            testEncounter1 = new Data.Model.Encounter
+            {
+                Id = 1,
+                PatientId = 1,
+                Notes = "Distant look in eyes",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Heartache",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
 
-//            badTestRentedMovies2 = new List<Data.Model.RentedMovie> {
-//                new Data.Model.RentedMovie { MovieId = 100 },
-//            };
+            testEncounter2 = new Data.Model.Encounter
+            {
+                Id = 2,
+                PatientId = 1,
+                Notes = "Unusually cheery",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Faintness",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-05-21",
+            };
 
-//            testRental1 = new Data.Model.Rental
-//            {
-//                RentalDate = "2022-05-25",
-//                RentedMovies = testRentedMovies
-//            };
+            testEncounter3 = new Data.Model.Encounter
+            {
+                Id = 3,
+                PatientId = 1,
+                Notes = "Patient keeps clutching head",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Migraine for days",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
 
-//            testRental2 = new Data.Model.Rental
-//            {
-//                RentalDate = "2022-05-25",
-//                RentedMovies = testRentedMovies
-//            };
+            testEncounterAltered = new Data.Model.Encounter
+            {
+                Id = 1,
+                PatientId = 1,
+                Notes = "Says he's happy to be alive",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Overwhelming sense of glee",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
 
-//            testRental3 = new Data.Model.Rental
-//            {
-//                RentalDate = "2022-05-25",
-//                RentedMovies = testRentedMovies
-//            };
+            testPatientDatabase = new List<Data.Model.Patient> { testPatient1, testPatient2, testPatient3 };
+            testEncounterDatabase = new List<Data.Model.Encounter> { testEncounter1, testEncounter2, testEncounter3 };
 
-//            testRental = new Data.Model.Rental
-//            {
-//                RentalDate = "2022-05-25",
-//                RentedMovies = testRentedMovies
-//            };
+            encounterRepositoryStub.Setup(x => x.CreateEncounterAsync(testEncounter1)).ReturnsAsync(testEncounter1);
+            encounterRepositoryStub.Setup(x => x.GetAllEncountersByIdAsync(1)).ReturnsAsync(testEncounterDatabase);
+            patientRepositoryStub.Setup(x => x.GetAllPatientsAsync()).ReturnsAsync(testPatientDatabase);
+            patientRepositoryStub.Setup(x => x.GetPatientByIdAsync(1)).ReturnsAsync(testPatient1);
+            encounterRepositoryStub.Setup(x => x.GetEncounterByIdAsync(1)).ReturnsAsync(testEncounter1);
+            encounterRepositoryStub.Setup(x => x.UpdateEncounterAsync(testEncounterAltered)).ReturnsAsync(testEncounterAltered);
 
-//            testRentalAltered = new Data.Model.Rental
-//            {
-//                RentalDate = "2000-05-25",
-//                RentedMovies = testRentedMovies
-//            };
+        }
 
-//            badTestRentalAltered = new Data.Model.Rental
-//            {
-//                RentalDate = "20001-05-25",
-//                RentedMovies = testRentedMovies
-//            };
+        [Fact]
+        public async Task CreateEncounterAsync_WithNoDatabase_ThrowsException()
+        {
+            encounterRepositoryStub.Setup(x => x.CreateEncounterAsync(testEncounter1)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await encounterProvider.CreateEncounterAsync(1, testEncounter1); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
 
-//            badTestRental = new Data.Model.Rental
-//            {
-//                RentalDate = "20222-05-25",
-//                RentedMovies = testRentedMovies
-//            };
+        }
 
-//            badTestRental2 = new Data.Model.Rental
-//            {
-//                RentalDate = "2022-05-25"
-//            };
+        [Fact]
+        public async Task CreateEncounterAsync_WithValidInfo_ReturnsDto()
+        {
+            var result = await encounterProvider.CreateEncounterAsync(1, testEncounter1);
+            result.Should().BeEquivalentTo(testEncounter1,
+                options => options.ComparingByMembers<Data.Model.Encounter>());
 
-//            badTestRental3 = new Data.Model.Rental
-//            {
-//                RentalDate = "2022-05-25",
-//                RentedMovies = badTestRentedMovies
-//            };
+        }
 
-//            badTestRental4 = new Data.Model.Rental
-//            {
-//                RentalDate = "2022-05-25",
-//                RentedMovies = badTestRentedMovies2
-//            };
+        [Fact]
+        public async Task CreateEncounterAsync_WithInvalidInfo_ThrowsError()
+        {
+            var badTestEncounter = new Data.Model.Encounter
+            {
+                PatientId = 2,
+                Notes = "Patient keeps clutching head",
+                VisitCode = "A",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "1",
+                Icd10 = "A",
+                TotalCost = 1,
+                Copay = 1,
+                ChiefComplaint = "Migraine for days",
+                Pulse = -1,
+                Systolic = 1.1,
+                Diastolic = 2.2,
+                Date = "1",
+            };
 
-//            rentalRepositoryStub.Setup(x => x.CreateRentalAsync(testRental)).ReturnsAsync(testRental);
-//            movieRepositoryStub.Setup(x => x.GetMovieByIdAsync(3)).ReturnsAsync(testMovie1);
-//            movieRepositoryStub.Setup(x => x.GetMovieByIdAsync(2)).ReturnsAsync(testMovie2);
-//            movieRepositoryStub.Setup(x => x.GetMovieByIdAsync(1)).ReturnsAsync(testMovie3);
-//            movieRepositoryStub.Setup(x => x.GetAllMoviesAsync()).ReturnsAsync(testMovieDatabase);
-//            rentalRepositoryStub.Setup(x => x.GetAllRentalsAsync()).ReturnsAsync(testRentalDatabase);
-//            rentalRepositoryStub.Setup(x => x.GetRentalByIdAsync(1)).ReturnsAsync(testRental1);
-//            rentalRepositoryStub.Setup(x => x.UpdateRentalAsync(testRentalAltered)).ReturnsAsync(testRentalAltered);
-//            rentalRepositoryStub.Setup(x => x.DeleteRentalByIdAsync(1)).ReturnsAsync(testRental1);
+            Func<Task> result = async () => { await encounterProvider.CreateEncounterAsync(1, badTestEncounter); };
+            //Assert
+            await result.Should().ThrowAsync<BadRequestException>();
 
-//        }
+        }
 
-//        [Fact]
-//        public async Task CreateRentalAsync_WithValidInfo_ReturnsDto()
-//        {
-//            var result = await rentalProvider.CreateRentalAsync(testRental);
-//            result.Should().BeEquivalentTo(testRental,
-//                options => options.ComparingByMembers<Data.Model.Rental>());
+        [Fact]
+        public async Task GetAllEncountersByIdAsync_WithNoDatabase_ThrowsException()
+        {
+            encounterRepositoryStub.Setup(x => x.GetAllEncountersByIdAsync(1)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await encounterProvider.GetAllEncountersByIdAsync(1); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
 
-//        }
+        }
 
-//        [Fact]
-//        public async Task CreateRentalAsync_WithInvalidInfo_ThrowsError()
-//        {
+        [Fact]
+        public async Task GetAllEncountersByIdAsync_WithEncountersInDatabase_ReturnsEncounters()
+        {
+            var result = await encounterProvider.GetAllEncountersByIdAsync(1);
+            result.Should().BeEquivalentTo(testEncounterDatabase,
+                options => options.ComparingByMembers<Data.Model.Encounter>());
+        }
 
-//            Func<Task> result = async () => { await rentalProvider.CreateRentalAsync(badTestRental); };
-//            //Assert
-//            await result.Should().ThrowAsync<BadRequestException>();
+        [Fact]
+        public async Task GetAllEncountersByIdAsync_WithNoEncountersInDatabase_ReturnsEmptyList()
+        {
 
-//        }
+            var emptyTestEncounterDatabase = new List<Data.Model.Encounter> { };
 
-//        [Fact]
-//        public async Task CreateRentalAsync_WithDifferentInvalidInfo_ThrowsError()
-//        {
+            encounterRepositoryStub.Setup(x => x.GetAllEncountersByIdAsync(1)).ReturnsAsync(emptyTestEncounterDatabase);
 
-//            Func<Task> result = async () => { await rentalProvider.CreateRentalAsync(badTestRental3); };
-//            //Assert
-//            await result.Should().ThrowAsync<BadRequestException>();
+            var result = await encounterProvider.GetAllEncountersByIdAsync(1);
+            result.Should().BeEquivalentTo(emptyTestEncounterDatabase);
+        }
 
-//        }
+        [Fact]
+        public async Task GetEncounterByIdAsync_WithValidId_ReturnsEncounter()
+        {
+            var result = await encounterProvider.GetEncounterByIdAsync(1);
+            result.Should().BeEquivalentTo(testEncounter1,
+                options => options.ComparingByMembers<Data.Model.Encounter>());
+        }
 
-//        [Fact]
-//        public async Task CreateRentalAsync_WithNoMovies_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await rentalProvider.CreateRentalAsync(badTestRental2); };
-//            //Assert
-//            await result.Should().ThrowAsync<BadRequestException>();
+        [Fact]
+        public async Task GetEncounterByIdAsync_WithNonexistentId_ThrowsError()
+        {
+            Func<Task> result = async () => { await encounterProvider.GetEncounterByIdAsync(100); };
+            await result.Should().ThrowAsync<NotFoundException>();
+        }
 
-//        }
+        [Fact]
+        public async Task UpdateEncounterAsync_WithNoDatabase_ThrowsException()
+        {
+            encounterRepositoryStub.Setup(x => x.UpdateEncounterAsync(testEncounterAltered)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(1, testEncounterAltered); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
 
-//        [Fact]
-//        public async Task GetAllRentalsAsync_WithRentalsInDatabase_ReturnsRentals()
-//        {
-//            var result = await rentalProvider.GetAllRentalsAsync();
-//            result.Should().BeEquivalentTo(testRentalDatabase,
-//                options => options.ComparingByMembers<Data.Model.Rental>());
-//        }
+        }
+        [Fact]
+        public async Task UpdateEncounterAsync_WithValidInfo_ReturnsUpdatedDto()
+        {
 
-//        [Fact]
-//        public async Task GetAllRentalsAsync_WithNoRentalsInDatabase_ReturnsEmptyList()
-//        {
+            var result = await encounterProvider.UpdateEncounterAsync(1, testEncounterAltered);
+            result.Should().BeEquivalentTo(testEncounterAltered,
+                options => options.ComparingByMembers<Data.Model.Encounter>());
 
-//            var emptyTestRentalDatabase = new List<Data.Model.Rental> { };
+        }
 
-//            rentalRepositoryStub.Setup(x => x.GetAllRentalsAsync()).ReturnsAsync(emptyTestRentalDatabase);
+        [Fact]
+        public async Task UpdateEncounterAsync_WithNonexistentId_ThrowsError()
+        {
+            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(100, testEncounterAltered); };
+            await result.Should().ThrowAsync<NotFoundException>();
 
-//            var result = await rentalProvider.GetAllRentalsAsync();
-//            result.Should().BeEquivalentTo(emptyTestRentalDatabase);
-//        }
+        }
 
-//        [Fact]
-//        public async Task GetRentalByIdAsync_WithValidId_ReturnsRental()
-//        {
-//            var result = await rentalProvider.GetRentalByIdAsync(1);
-//            result.Should().BeEquivalentTo(testRental1,
-//                options => options.ComparingByMembers<Data.Model.Rental>());
-//        }
+        [Fact]
+        public async Task UpdatePatientAsync_WithInvalidInfo_ThrowsError()
+        {
+            var badTestEncounterAltered = new Data.Model.Encounter
+            {
+                Id = 1,
+                PatientId = 1,
+                Notes = "Says he's happy to be alive",
+                VisitCode = "A",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "1",
+                Icd10 = "A1",
+                TotalCost = 22,
+                Copay = -1,
+                ChiefComplaint = "Overwhelming sense of glee",
+                Pulse = 1.1,
+                Systolic = -1,
+                Diastolic = -1,
+                Date = "1",
+            };
+            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(1, badTestEncounterAltered); };
+            await result.Should().ThrowAsync<BadRequestException>();
 
-//        [Fact]
-//        public async Task GetRentalByIdAsync_WithNonexistentId_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await rentalProvider.GetRentalByIdAsync(100); };
-//            await result.Should().ThrowAsync<NotFoundException>();
-//        }
+        }
 
-//        [Fact]
-//        public async Task UpdateRentalAsync_WithValidInfo_ReturnsUpdatedDto()
-//        {
-//            var result = await rentalProvider.UpdateRentalAsync(1, testRentalAltered);
-//            result.Should().BeEquivalentTo(testRentalAltered,
-//                options => options.ComparingByMembers<Data.Model.Rental>());
+        [Fact]
+        public async Task GetPatientByIdAsync_WithNoPatientDatabase_ThrowsException()
+        {
+            patientRepositoryStub.Setup(x => x.GetPatientByIdAsync(1)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await patientProvider.GetPatientByIdAsync(1); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
 
-//        }
+        }
 
-//        [Fact]
-//        public async Task UpdateRentalAsync_WithNonexistentId_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await rentalProvider.UpdateRentalAsync(100, testRentalAltered); };
-//            await result.Should().ThrowAsync<NotFoundException>();
+        [Fact]
+        public async Task GetPatientByIdAsync_WithNonexistentId_ThrowsError()
+        {
+            Func<Task> result = async () => { await patientProvider.GetPatientByIdAsync(100); };
+            await result.Should().ThrowAsync<NotFoundException>();
+        }
 
-//        }
+        [Fact]
+        public void ValidateIfEmptyOrNull_ReturnsTrueIfEmpty()
+        {
+            var given = string.Empty;
+            var actual = encounterProvider.ValidateIfEmptyOrNull(given);
+            actual.Should().BeTrue();
+        }
 
-//        [Fact]
-//        public async Task UpdateMovieAsync_WithInvalidInfo_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await rentalProvider.UpdateRentalAsync(1, badTestRentalAltered); };
-//            await result.Should().ThrowAsync<BadRequestException>();
+        [Fact]
+        public void ValidateIfEmptyOrNull_ReturnsTrueIfNull()
+        {
+            string given = null;
+            var actual = encounterProvider.ValidateIfEmptyOrNull(given);
+            actual.Should().BeTrue();
+        }
 
-//        }
+        [Fact]
+        public void ValidateIfEmptyOrNull_ReturnsTrueIfOnlySpaces()
+        {
+            var given = "   ";
+            var actual = encounterProvider.ValidateIfEmptyOrNull(given);
+            actual.Should().BeTrue();
+        }
 
-//        [Fact]
-//        public async Task DeleteRentalAsync_WithValidId_ReturnsDeletedDto()
-//        {
-//            var result = await rentalProvider.DeleteRentalByIdAsync(1);
-//            result.Should().BeEquivalentTo(testRental1,
-//                options => options.ComparingByMembers<Data.Model.Rental>());
-
-//        }
-
-//        [Fact]
-//        public async Task DeleteMovieAsync_WithNonexistentId_ThrowsException()
-//        {
-//            Func<Task> result = async () => { await rentalProvider.DeleteRentalByIdAsync(100); };
-//            await result.Should().ThrowAsync<NotFoundException>();
-
-//        }
-
-//        [Fact]
-//        public void ValidatePriceFormat_WithProperFormat_ReturnsTrue()
-//        {
-//            var given = "22.99";
-//            var actual = rentalProvider.ValidatePriceFormat(given);
-//            actual.Should().BeTrue();
-
-//        }
-
-//        [Fact]
-//        public void ValidatePriceFormat_WithInvalidFormat_ReturnsFalse()
-//        {
-//            var given = "OOPSIE!";
-//            var actual = rentalProvider.ValidatePriceFormat(given);
-//            actual.Should().BeFalse();
-
-//        }
-
-//        [Fact]
-//        public async Task GetMovieByIdAsync_WithNonexistentId_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await rentalProvider.GetMovieByIdAsync(100); };
-//            await result.Should().ThrowAsync<NotFoundException>();
-//        }
-
-//        [Fact]
-//        public async Task ValidateRentedMovieIds_WithNoRentedMovies_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await rentalProvider.ValidateRentedMovieIds(badTestRental2); };
-//            await result.Should().ThrowAsync<BadRequestException>();
-//        }
-
-//        [Fact]
-//        public async Task ValidateRentedMovieIds_WithNoMovieIds_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await rentalProvider.ValidateRentedMovieIds(badTestRental3); };
-//            await result.Should().ThrowAsync<BadRequestException>();
-//        }
-
-//        [Fact]
-//        public async Task ValidateRentedMovieIds_WithNonexistentMovieIds_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await rentalProvider.ValidateRentedMovieIds(badTestRental4); };
-//            await result.Should().ThrowAsync<BadRequestException>();
-//        }
-
-//        [Fact]
-//        public void ValidateIfEmptyOrNull_ReturnsTrueIfEmpty()
-//        {
-//            var given = string.Empty;
-//            var actual = rentalProvider.ValidateIfEmptyOrNull(given);
-//            actual.Should().BeTrue();
-//        }
-
-//        [Fact]
-//        public void ValidateIfEmptyOrNull_ReturnsTrueIfNull()
-//        {
-//            string given = null;
-//            var actual = rentalProvider.ValidateIfEmptyOrNull(given);
-//            actual.Should().BeTrue();
-//        }
-
-//        [Fact]
-//        public void ValidateIfEmptyOrNull_ReturnsTrueIfOnlySpaces()
-//        {
-//            var given = "   ";
-//            var actual = rentalProvider.ValidateIfEmptyOrNull(given);
-//            actual.Should().BeTrue();
-//        }
-
-//        [Fact]
-//        public void ValidateIfEmptyOrNull_ReturnsFalseIfNotEmptyOrNull()
-//        {
-//            var given = "I love renting movies!";
-//            var actual = rentalProvider.ValidateIfEmptyOrNull(given);
-//            actual.Should().BeFalse();
-//        }
-//    }
-//}
+        [Fact]
+        public void ValidateIfEmptyOrNull_ReturnsFalseIfNotEmptyOrNull()
+        {
+            var given = "Close encounters of the patient kind...";
+            var actual = encounterProvider.ValidateIfEmptyOrNull(given);
+            actual.Should().BeFalse();
+        }
+    }
+}

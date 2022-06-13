@@ -1,249 +1,258 @@
-﻿//using MovieRentalsAPI.IntegrationTesting.Utilities;
-//using Microsoft.AspNetCore.Mvc.Testing;
-//using System.Collections.Generic;
-//using System.Net;
-//using System.Net.Http;
-//using System.Net.Http.Json;
-//using System.Threading.Tasks;
-//using Xunit;
-//using MovieRentalsAPI.DTOs;
+﻿using HealthAPI.IntegrationTests.Utilities;
+using Microsoft.AspNetCore.Mvc.Testing;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using Xunit;
+using HealthAPI.DTOs;
 
-//namespace MovieRentalsAPI.IntegrationTesting.IntegrationTests
-//{
-//    [Collection("Sequential")]
-//    public class RentalIntegrationTests : IClassFixture<CustomWebApplicationFactory>
-//    {
-//        private readonly HttpClient _client;//Postman in code
+namespace HealthAPI.IntegrationTests.IntegrationTests
+{
+    [Collection("Sequential")]
+    public class EncounterIntegrationTests : IClassFixture<CustomWebApplicationFactory>
+    {
+        private readonly HttpClient _client;//Postman in code
 
-//        public RentalIntegrationTests(CustomWebApplicationFactory factory)
-//        {
-//            _client = factory.CreateClient(new WebApplicationFactoryClientOptions//initialize the above
-//            {
-//                AllowAutoRedirect = false
-//            });
-//        }
+        public EncounterIntegrationTests(CustomWebApplicationFactory factory)
+        {
+            _client = factory.CreateClient(new WebApplicationFactoryClientOptions//initialize the above
+            {
+                AllowAutoRedirect = false
+            });
+        }
 
-//        [Fact]
-//        public async Task GetAllRentalsAsync_Returns200()
-//        {
+        [Fact]
+        public async Task GetAllEncountersByIdAsync_Returns200()
+        {
 
-//            var response = await _client.GetAsync("/rentals");
-//            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var response = await _client.GetAsync("/patients/1/encounters");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-//        }
+        }
 
-//        [Fact]
-//        public async Task CreateRentalAsync_Returns201()
-//        {
-//            var testRentedMovie = new List<RentedMovieDTO>
-//            { new RentedMovieDTO
-//            {
-//                MovieId = 1,
-//                DaysRented = 1
-//            }
-//            };
+        [Fact]
+        public async Task CreateEncounterAsync_Returns201()
+        {
 
-//            var rentalDTO = new RentalDTO
-//            {
-//                RentalDate = "2022-05-20",
-//                RentedMovies = testRentedMovie
-//            };
+            var testEncounterDTO = new Data.Model.Encounter
+            {
+                Id = 10,
+                PatientId = 1,
+                Notes = "Distant look in eyes",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Heartache",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
 
-//            var rentalDTOJson = JsonContent.Create(rentalDTO);
+            var encounterDTOJson = JsonContent.Create(testEncounterDTO);
 
-//            var response = await _client.PostAsync("/rentals", rentalDTOJson);
-//            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            var response = await _client.PostAsync("patients/1/encounters", encounterDTOJson);
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 
-//        }
+        }
 
-//        [Fact]
-//        public async Task CreateRentalAsync_WithInvalidInfo_Returns400()
-//        {
-//            var testRentedMovie = new List<RentedMovieDTO>
-//            { new RentedMovieDTO
-//            {
-//                MovieId = 1,
-//                DaysRented = 1
-//            }
-//            };
+        [Fact]
+        public async Task CreateEncounterAsync_WithInvalidInfo_Returns400()
+        {
+            var testEncounterDTO = new Data.Model.Encounter
+            {
+                Id = 11,
+                PatientId = 1,
+                VisitCode = "A",
+                BillingCode = "11",
+                Icd10 = "A1",
+                TotalCost = 99,
+                Copay = -1,
+                Pulse = 12.2,
+                Systolic = 12.3,
+                Diastolic = 9.0,
+                Date = "179-02-21",
+            };
 
-//            var rentalDTO = new RentalDTO
-//            {
-//                RentalDate = "20222-05-20",
-//                RentedMovies = testRentedMovie
-//            };
+            var encounterDTOJson = JsonContent.Create(testEncounterDTO);
 
-//            var rentalDTOJson = JsonContent.Create(rentalDTO);
+            var response = await _client.PostAsync("patients/1/encounters", encounterDTOJson);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-//            var response = await _client.PostAsync("/rentals", rentalDTOJson);
-//            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
 
-//        }
+        [Fact]
+        public async Task GetEncounterByIdAsync_WithExistingId_Returns200()
+        {
 
-//        [Fact]
-//        public async Task GetRentalByIdAsync_WithExistingId_Returns200()
-//        {
-//            var testRentedMovie = new List<RentedMovieDTO>
-//            { new RentedMovieDTO
-//            {
-//                MovieId = 1,
-//                DaysRented = 1
-//            }
-//            };
+            var encounterDTO = new EncounterDTO
+            {
+                Id = 13,
+                PatientId = 1,
+                Notes = "Distant look in eyes",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Heartache",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
 
-//            var rentalDTO = new RentalDTO
-//            {
-//                Id = 22,
-//                RentalDate = "2022-05-20",
-//                RentedMovies = testRentedMovie
-//            };
+            var encounterDTOJson = JsonContent.Create(encounterDTO);
 
-//            var rentalDTOJson = JsonContent.Create(rentalDTO);
+            await _client.PostAsync("patients/1/encounters", encounterDTOJson);
+            var existingEncounter = await (await _client.GetAsync("patients/1/encounters/13")).Content.ReadAsAsync<EncounterDTO>();
+            Assert.Equal("1796-02-21", existingEncounter.Date);
 
-//            await _client.PostAsync("/rentals", rentalDTOJson);
-//            var existingRental = await (await _client.GetAsync("/rentals/22")).Content.ReadAsAsync<RentalDTO>();
-//            Assert.Equal("2022-05-20", existingRental.RentalDate);
+            var response = await _client.GetAsync("patients/1/encounters/13");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-//            var response = await _client.GetAsync("/rentals/22");
-//            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
 
-//        }
+        [Fact]
+        public async Task GetEncounterByIdAsync_WithNonexistentEncounter_Returns404()
+        {
 
-//        [Fact]
-//        public async Task GetRentalByIdAsync_WithNonexistentRental_Returns404()
-//        {
+            var response = await _client.GetAsync("patients/1/encounters/100");
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
-//            var response = await _client.GetAsync("/rentals/100");
-//            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
 
-//        }
+        [Fact]
+        public async Task UpdateEncounterByIdAsync_Returns201()
+        {
 
-//        [Fact]
-//        public async Task UpdateRentalByIdAsync_Returns201()
-//        {
-//            var testRentedMovie = new List<RentedMovieDTO>
-//            { new RentedMovieDTO
-//            {
-//                MovieId = 1,
-//                DaysRented = 1
-//            }
-//            };
+            var encounterDTO = new EncounterDTO
+            {
+                Id = 14,
+                PatientId = 1,
+                Notes = "Distant look in eyes",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Heartache",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
 
-//            var rentalDTO = new RentalDTO
-//            {
-//                Id = 32,
-//                RentalDate = "2022-05-20",
-//                RentedMovies = testRentedMovie
-//            };
+            var updatedEncounterDTO = new EncounterDTO
+            {
+                Id = 14,
+                PatientId = 1,
+                Notes = "Patient is unreasonably belligerant today",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Says he's been wronged",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
 
-//            var updatedRentalDTO = new RentalDTO
-//            {
-//                Id = 32,
-//                RentalDate = "2022-05-26",
-//                RentedMovies = testRentedMovie
-//            };
+            var encounterDTOJson = JsonContent.Create(encounterDTO);
+            await _client.PostAsync("patients/1/encounters", encounterDTOJson);
 
-//            var rentalDTOJson = JsonContent.Create(rentalDTO);
-//            await _client.PostAsync("/rentals", rentalDTOJson);
+            var existingEncounter = await (await _client.GetAsync("patients/1/encounters/14")).Content.ReadAsAsync<EncounterDTO>();
+            Assert.Equal("1796-02-21", existingEncounter.Date);
 
-//            var existingRental = await (await _client.GetAsync("/rentals/32")).Content.ReadAsAsync<RentalDTO>();
-//            Assert.Equal("2022-05-20", existingRental.RentalDate);
+            var response = await _client.PutAsJsonAsync("patients/1/encounters/14", updatedEncounterDTO);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
 
-//            var response = await _client.PutAsJsonAsync("/rentals/32", updatedRentalDTO);
-//            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//        }
+        [Fact]
+        public async Task UpdateEncounterByIdAsync_WithInvalidInformation_Returns400()
+        {
 
-//        [Fact]
-//        public async Task UpdateRentalByIdAsync_WithInvalidInformation_Returns400()
-//        {
-//            var testRentedMovie = new List<RentedMovieDTO>
-//            { new RentedMovieDTO
-//            {
-//                MovieId = 1,
-//                DaysRented = 1
-//            }
-//            };
+            var encounterDTO = new EncounterDTO
+            {
+                Id = 15,
+                PatientId = 1,
+                Notes = "Patient is unreasonably belligerant today",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Says he's been wronged",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
 
-//            var rentalDTO = new RentalDTO
-//            {
-//                Id = 28,
-//                RentalDate = "2022-05-20",
-//                RentedMovies = testRentedMovie
-//            };
+            var updatedEncounterDTO = new EncounterDTO
+            {
+                Id = 18,
+                PatientId = 1,
+                Notes = "Patient is unreasonably belligerant today",
+                VisitCode = "A1",
+                BillingCode = "1",
+                Icd10 = "A",
+                TotalCost = 99,
+                Copay = -1,
+                Pulse = 12.2,
+                Systolic = 12.3,
+                Diastolic = 90.0,
+                Date = "1796-02-2",
+            };
 
-//            var updatedRentalDTO = new RentalDTO
-//            {
-//                Id = 28,
-//                RentalDate = "20222-05-26",
-//                RentedMovies = testRentedMovie
-//            };
+            var encounterDTOJson = JsonContent.Create(encounterDTO);
+            await _client.PostAsync("patients/1/encounters", encounterDTOJson);
 
-//            var rentalDTOJson = JsonContent.Create(rentalDTO);
-//            await _client.PostAsync("/rentals", rentalDTOJson);
+            var existingEncounter = await (await _client.GetAsync("patients/1/encounters/15")).Content.ReadAsAsync<EncounterDTO>();
+            Assert.Equal("1796-02-21", existingEncounter.Date);
 
-//            var existingRental = await (await _client.GetAsync("/rentals/28")).Content.ReadAsAsync<RentalDTO>();
-//            Assert.Equal("2022-05-20", existingRental.RentalDate);
+            var response = await _client.PutAsJsonAsync("patients/1/encounters/15", updatedEncounterDTO);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
-//            var response = await _client.PutAsJsonAsync("/rentals/28", updatedRentalDTO);
-//            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
 
-//        }
+        [Fact]
+        public async Task UpdateEncounterByIdAsync_WithNonexistentId_Returns404()
+        {
+            var encounterDTO = new EncounterDTO
+            {
+                Id = 16,
+                PatientId = 1,
+                Notes = "Patient is unreasonably belligerant today",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Says he's been wronged",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
 
-//        [Fact]
-//        public async Task UpdateRentalByIdAsync_WithNonexistentId_Returns404()
-//        {
-//            var rentalDTO = new MovieDTO
-//            {
-//                Sku = "WESAND-2103",
-//                Title = "The Goa Limited",
-//                Genre = "Twee",
-//                Director = "Wes Anderson",
-//                DailyRentalCost = 1.99m
-//            };
+            var encounterDTOJson = JsonContent.Create(encounterDTO);
 
-//            var rentalDTOJson = JsonContent.Create(rentalDTO);
+            var response = await _client.PutAsync("/encounters/500", encounterDTOJson);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
-//            var response = await _client.PutAsync("/rentals/500", rentalDTOJson);
-//            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-
-//        }
-
-//        [Fact]
-//        public async Task DeleteRentalByIdAsync_WithExistingId_Returns204()
-//        {
-//            var testRentedMovie = new List<RentedMovieDTO>
-//            { new RentedMovieDTO
-//            {
-//                MovieId = 1,
-//                DaysRented = 1
-//            }
-//            };
-
-//            var rentalDTO = new RentalDTO
-//            {
-//                Id = 86,
-//                RentalDate = "2022-05-20",
-//                RentedMovies = testRentedMovie
-//            };
-
-//            var rentalDTOJson = JsonContent.Create(rentalDTO);
-
-//            await _client.PostAsync("/rentals", rentalDTOJson);
-//            var existingRental = await (await _client.GetAsync("/rentals/86")).Content.ReadAsAsync<RentalDTO>();
-//            Assert.Equal("2022-05-20", existingRental.RentalDate);
-
-//            var response = await _client.DeleteAsync("/rentals/86");
-//            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-
-//        }
-
-//        [Fact]
-//        public async Task DeleteMovieByIdAsync_WithNonexistentId_Returns404()
-//        {
-
-//            var response = await _client.DeleteAsync("/rentals/106");
-//            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-
-//        }
-//    }
-//}
+        }
+    }
+}

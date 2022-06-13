@@ -87,3 +87,7 @@ For each object, all fields are required and include validation.
 ## Testing
 
 Unit test line coverage is currently 83.01%. To run tests, select Run on the top menu of Visual Studio and then click on Run Unit Tests. To view coverage reports and coverage gutters on a Mac, follow the instructions [here] (https://github.com/ademanuele/VSMac-CodeCoverage) to install and run the VSMac-CodeCoverage extension. Clicking the Gather Coverage button on the window that pulls out to the right side will also run tests.
+
+## Swashbuckle
+Also known as Swagger, this tool creates an interface for the API when you run the application.  You can use markup in the controllers to show documentation on the interface.  It is preinstalled with basic configuration (Startup.cs) when creating a new API with the newest versions of Visual Studio.
+https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-5.0&tabs=visual-studio

@@ -379,7 +379,6 @@ namespace HealthAPI.Provider.Providers
             return stateCheck.IsMatch(state);
         }
 
-
         /// <summary>
         /// Validates if patient postal code is only five or nine numerical digits (ZIPCODE)
         /// </summary>
@@ -428,5 +427,4 @@ namespace HealthAPI.Provider.Providers
             return false;
         }
     }
-
 }

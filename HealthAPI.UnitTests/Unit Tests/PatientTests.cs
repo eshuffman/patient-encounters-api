@@ -1,252 +1,479 @@
-﻿//using MovieRentalsAPI.Data.Interfaces;
-//using Microsoft.Extensions.Logging;
-//using Moq;
-//using System;
-//using System.Collections.Generic;
-//using System.Threading.Tasks;
-//using Xunit;
-//using MovieRentalsAPI.Provider.Providers;
-//using MovieRentalsAPI.Utilities.HttpResponseExceptions;
-//using FluentAssertions;
+﻿using HealthAPI.Data.Interfaces;
+using Microsoft.Extensions.Logging;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Xunit;
+using HealthAPI.Provider.Providers;
+using HealthAPI.Utilities.HttpResponseExceptions;
+using FluentAssertions;
 
-//namespace MovieRentalsAPI.Testing.UnitTests
-//{
-//    public class MovieProviderTests
-//    {
-//        private readonly Mock<IMovieRepository> movieRepositoryStub;
-//        private readonly Mock<ILogger<MovieProvider>> loggerStub;
-//        private readonly MovieProvider movieProvider;
+namespace HealthAPI.Testing.UnitTests
+{
+    public class PatientProviderTests
+    {
+        private readonly Mock<IPatientRepository> patientRepositoryStub;
+        private readonly Mock<ILogger<PatientProvider>> loggerStub;
+        private readonly PatientProvider patientProvider;
+        private readonly Mock<IEncounterRepository> encounterRepositoryStub;
 
-//        private readonly Data.Model.Movie testMovie;
-//        private readonly Data.Model.Movie testMovie1;
-//        private readonly Data.Model.Movie testMovie2;
-//        private readonly Data.Model.Movie testMovie3;
-//        private readonly Data.Model.Movie badTestMovie;
-//        private readonly Data.Model.Movie badTestMovie2;
-//        private readonly Data.Model.Movie duplicateSkuMovie;
-//        private readonly Data.Model.Movie testMovieAltered;
-//        private readonly Data.Model.Movie badTestMovieAltered;
-
-
-//        private readonly List<Data.Model.Movie> testMovieDatabase;
+        private readonly Data.Model.Patient testPatient1;
+        private readonly Data.Model.Patient testPatient2;
+        private readonly Data.Model.Patient testPatient3;
+        private readonly Data.Model.Patient testPatientAltered;
+        private readonly Data.Model.Encounter testEncounter;
+        private readonly List<Data.Model.Patient> testPatientDatabase;
+        private readonly List<Data.Model.Encounter> testEncounterDatabase;
 
 
-//        public MovieProviderTests()
-//        {
-//            // Arrange
-//            // Create some movies 
-//            movieRepositoryStub = new Mock<IMovieRepository>();
-//            loggerStub = new Mock<ILogger<MovieProvider>>();
+        public PatientProviderTests()
+        {
+            // Arrange
+            // Create some movies 
+            patientRepositoryStub = new Mock<IPatientRepository>();
+            loggerStub = new Mock<ILogger<PatientProvider>>();
+            encounterRepositoryStub = new Mock<IEncounterRepository>();
 
-//            movieProvider = new MovieProvider(movieRepositoryStub.Object, loggerStub.Object);
+            patientProvider = new PatientProvider(patientRepositoryStub.Object, encounterRepositoryStub.Object, loggerStub.Object);
 
-//            testMovie = new Data.Model.Movie { Id = 5, Sku = "WESAND-2007", Title = "The Darjeeling Limited", Genre = "Twee", Director = "Wes Anderson", DailyRentalCost = 1.00m };
-//            testMovie1 = new Data.Model.Movie { Id = 1, Sku = "WESAND-2006", Title = "The Assam Limited", Genre = "Twee", Director = "Wes Anderson", DailyRentalCost = 1.00m };
-//            testMovie2 = new Data.Model.Movie { Id = 2, Sku = "WESAND-2008", Title = "The Kolkata Limited", Genre = "Twee", Director = "Wes Anderson", DailyRentalCost = 1.00m };
-//            testMovie3 = new Data.Model.Movie { Id = 3, Sku = "WESAND-2009", Title = "The Delhi Limited", Genre = "Twee", Director = "Wes Anderson", DailyRentalCost = 1.00m };
-//            badTestMovie = new Data.Model.Movie { Sku = "WESAND-20073", DailyRentalCost = 12.959m };
-//            badTestMovie2 = new Data.Model.Movie { Title = "The Delhi Limited", Genre = "Twee", Director = "Wes Anderson" };
+            testPatient1 = new Data.Model.Patient
+            {
+                Id = 1,
+                FirstName = "Fitzwilliam",
+                LastName = "Darcy",
+                Ssn = "123-12-1234",
+                Email = "prideful@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 35,
+                Height = 72,
+                Weight = 200,
+                Insurance = "Queen's Care",
+                Gender = "Male",
+            };
 
-//            duplicateSkuMovie = new Data.Model.Movie { Sku = "WESAND-2008", Title = "The Bengal Limited", Genre = "Twee", Director = "Wes Anderson", DailyRentalCost = 1.00m };
-//            testMovieAltered = new Data.Model.Movie { Sku = "WESAND-2006", Title = "The Agra Limited", Genre = "Twee", Director = "Wes Anderson", DailyRentalCost = 10.00m };
-//            badTestMovieAltered = new Data.Model.Movie { Sku = "WESAND-20062", Title = "The Agra Limited", Genre = "Twee", Director = "Wes Anderson", DailyRentalCost = 10.002m };
+            testPatient2 = new Data.Model.Patient
+            {
+                Id = 2,
+                FirstName = "Elizabeth",
+                LastName = "Bennett",
+                Ssn = "123-12-1234",
+                Email = "sunny@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 21,
+                Height = 64,
+                Weight = 120,
+                Insurance = "Queen's Care",
+                Gender = "Female",
+            };
+
+            testPatient3 = new Data.Model.Patient
+            {
+                Id = 3,
+                FirstName = "Mary",
+                LastName = "Bennett",
+                Ssn = "123-12-1234",
+                Email = "misunderstood@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 18,
+                Height = 63,
+                Weight = 128,
+                Insurance = "Queen's Care",
+                Gender = "Other",
+            };
+
+            testPatientAltered = new Data.Model.Patient
+            {
+                Id = 1,
+                FirstName = "Fitzwilhelm",
+                LastName = "Darcy",
+                Ssn = "123-12-1234",
+                Email = "prideful@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 18,
+                Height = 63,
+                Weight = 128,
+                Insurance = "Queen's Care",
+                Gender = "Other",
+            };
+
+            testEncounter = new Data.Model.Encounter
+            {
+                Id = 1,
+                PatientId = 1,
+                Notes = "Distant look in eyes",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Heartache",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
+
+            testEncounterDatabase = new List<Data.Model.Encounter> { testEncounter };
+            testPatientDatabase = new List<Data.Model.Patient> { testPatient1, testPatient2, testPatient3 };
+            patientRepositoryStub.Setup(x => x.CreatePatientAsync(testPatient1)).ReturnsAsync(testPatient1);
+            patientRepositoryStub.Setup(x => x.GetAllPatientsAsync()).ReturnsAsync(testPatientDatabase);
+            patientRepositoryStub.Setup(x => x.GetPatientByIdAsync(1)).ReturnsAsync(testPatient1);
+            patientRepositoryStub.Setup(x => x.UpdatePatientAsync(testPatientAltered)).ReturnsAsync(testPatientAltered);
+            patientRepositoryStub.Setup(x => x.DeletePatientByIdAsync(3)).ReturnsAsync(testPatient3);
+            patientRepositoryStub.Setup(x => x.GetPatientByEmailAsync(testPatient1)).ReturnsAsync(testPatient1);
+            encounterRepositoryStub.Setup(x => x.GetAllEncountersByIdAsync(1)).ReturnsAsync(testEncounterDatabase);
+
+        }
+
+        [Fact]
+        public async Task CreatePatientAsync_WithNoPatientDatabase_ThrowsException()
+        {
+            var testPatient4 = new Data.Model.Patient
+            {
+                Id = 22,
+                FirstName = "Elizabeth",
+                LastName = "Bennett",
+                Ssn = "123-12-1234",
+                Email = "chillaf@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 21,
+                Height = 64,
+                Weight = 120,
+                Insurance = "Queen's Care",
+                Gender = "Female",
+            };
+            patientRepositoryStub.Setup(x => x.CreatePatientAsync(testPatient4)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await patientProvider.CreatePatientAsync(testPatient4); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+        [Fact]
+        public async Task CreatePatientAsync_WithNoEmailCheckDatabase_ThrowsException()
+        {
+            patientRepositoryStub.Setup(x => x.GetPatientByEmailAsync(testPatient1)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await patientProvider.CreatePatientAsync(testPatient1); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+        [Fact]
+        public async Task CreatePatientAsync_WithValidInfo_ReturnsDto()
+        {            
+            var testPatient4 = new Data.Model.Patient
+            {
+                Id = 22,
+                FirstName = "Elizabeth",
+                LastName = "Bennett",
+                Ssn = "123-12-1234",
+                Email = "chillaf@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 21,
+                Height = 64,
+                Weight = 120,
+                Insurance = "Queen's Care",
+                Gender = "Female",
+            };
+            patientRepositoryStub.Setup(x => x.CreatePatientAsync(testPatient4)).ReturnsAsync(testPatient4);
+            var result = await patientProvider.CreatePatientAsync(testPatient4);
+            result.Should().BeEquivalentTo(testPatient4,
+                options => options.ComparingByMembers<Data.Model.Patient>());
+
+        }
+
+        [Fact]
+        public async Task CreatePatientAsync_WithInvalidInfo_ThrowsException()
+        {
+            //Arrange
+            var badTestPatient = new Data.Model.Patient
+            {
+                FirstName = "1",
+                LastName = "1",
+                Ssn = "1",
+                Email = "pridefullongbourne.house",
+                Street = "",
+                City = "",
+                State = "TNT",
+                Postal = "1",
+                Age = 35.5,
+                Height = 72.1,
+                Weight = -1,
+                Insurance = "",
+                Gender = "Android",
+            };
+            patientRepositoryStub.Setup(x => x.CreatePatientAsync(badTestPatient)).ReturnsAsync(badTestPatient);
+            //Act
+            Func<Task> result = async () => { await patientProvider.CreatePatientAsync(badTestPatient); };
+            //Assert
+            await result.Should().ThrowAsync<BadRequestException>();
+        }
+
+        [Fact]
+        public async Task CreatePatientAsync_WithMissingInfo_ThrowsException()
+        {
+            //Arrange
+            var badTestPatient = new Data.Model.Patient {};
+            patientRepositoryStub.Setup(x => x.CreatePatientAsync(badTestPatient)).ReturnsAsync(badTestPatient);
+            //Act
+            Func<Task> result = async () => { await patientProvider.CreatePatientAsync(badTestPatient); };
+            //Assert
+            await result.Should().ThrowAsync<BadRequestException>();
+        }
+
+        [Fact]
+        public async Task CreatePatientAsync_WithDuplicateEmail_ThrowsException()
+        {
+            //Arrange
+            var duplicateEmailPatient = new Data.Model.Patient
+            {
+                FirstName = "Fitzie",
+                LastName = "Darcy",
+                Ssn = "123-12-1234",
+                Email = "prideful@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 35,
+                Height = 72,
+                Weight = 200,
+                Insurance = "Queen's Care",
+                Gender = "Male",
+            };
+            //Act
+            Func<Task> result = async () => { await patientProvider.CreatePatientAsync(duplicateEmailPatient); };
+            //Assert
+            await result.Should().ThrowAsync<ConflictException>();
+        }
+
+        [Fact]
+        public async Task GetAllPatientsAsync_WithNoPatientDatabase_ThrowsException()
+        {
+            patientRepositoryStub.Setup(x => x.GetAllPatientsAsync()).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await patientProvider.GetAllPatientsAsync(); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+        [Fact]
+        public async Task GetAllPatientsAsync_WithPatientsInDatabase_ReturnsList()
+        {
+            var result = await patientProvider.GetAllPatientsAsync();
+            result.Should().BeEquivalentTo(testPatientDatabase,
+                options => options.ComparingByMembers<Data.Model.Patient>());
+        }
+
+        [Fact]
+        public async Task GetAllMoviesAsync_WithNoMoviesInDatabase_ReturnsEmptyList()
+        {
+            var emptyTestPatientDatabase = new List<Data.Model.Patient> { };
+
+            patientRepositoryStub.Setup(x => x.GetAllPatientsAsync()).ReturnsAsync(emptyTestPatientDatabase);
+
+            var result = await patientProvider.GetAllPatientsAsync();
+            result.Should().BeEquivalentTo(emptyTestPatientDatabase);
+        }
+
+        [Fact]
+        public async Task GetPatientByIdAsync_WithNoPatientDatabase_ThrowsException()
+        {
+            patientRepositoryStub.Setup(x => x.GetPatientByIdAsync(1)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await patientProvider.GetPatientByIdAsync(1); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+        [Fact]
+        public async Task GetPatientByIdAsync_WithValidId_ReturnsPatient()
+        {
+            var result = await patientProvider.GetPatientByIdAsync(1);
+            result.Should().BeEquivalentTo(testPatient1,
+                options => options.ComparingByMembers<Data.Model.Patient>());
+        }
+
+        [Fact]
+        public async Task GetPatientByIdAsync_WithNonexistentId_ThrowsError()
+        {
+            Func<Task> result = async () => { await patientProvider.GetPatientByIdAsync(100); };
+            await result.Should().ThrowAsync<NotFoundException>();
+        }
+
+        [Fact]
+        public async Task UpdatePatientAsync_WithNoDatabase_ThrowsException()
+        {
+            patientRepositoryStub.Setup(x => x.UpdatePatientAsync(testPatientAltered)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await patientProvider.UpdatePatientAsync(1, testPatientAltered); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+        [Fact]
+        public async Task UpdatePatientAsync_WithValidInfo_ReturnsUpdatedDto()
+        {
+            var result = await patientProvider.UpdatePatientAsync(1, testPatientAltered);
+            result.Should().BeEquivalentTo(testPatientAltered,
+                options => options.ComparingByMembers<Data.Model.Patient>());
+
+        }
+
+        [Fact]
+        public async Task UpdatePatientAsync_WithNonexistentId_ThrowsError()
+        {
+            Func<Task> result = async () => { await patientProvider.UpdatePatientAsync(100, testPatientAltered); };
+            await result.Should().ThrowAsync<NotFoundException>();
+
+        }
+
+        [Fact]
+        public async Task UpdatePatientAsync_WithInvalidInfo_ThrowsError()
+        {
+            var badTestPatientAltered = new Data.Model.Patient
+            {
+                FirstName = "3",
+                LastName = "3",
+                Ssn = "1",
+                Email = "pridefullongbourne.house",
+                Postal = "3",
+                Age = 35.1,
+                Height = 72.1,
+                Weight = -200,
+                Gender = "Droid",
+            };
+            Func<Task> result = async () => { await patientProvider.UpdatePatientAsync(1, badTestPatientAltered); };
+            await result.Should().ThrowAsync<BadRequestException>();
+
+        }
+
+        [Fact]
+        public async Task UpdatePatientAsync_WithAlteredId_ThrowsError()
+        {
+            var badTestPatientAltered = new Data.Model.Patient
+            {
+                Id = 3,
+                FirstName = "3",
+                LastName = "3",
+                Ssn = "1",
+                Email = "pridefullongbourne.house",
+                Postal = "3",
+                Age = 35.1,
+                Height = 72.1,
+                Weight = -200,
+                Gender = "Droid",
+            };
+            Func<Task> result = async () => { await patientProvider.UpdatePatientAsync(1, badTestPatientAltered); };
+            await result.Should().ThrowAsync<BadRequestException>();
+
+        }
+        [Fact]
+        public async Task UpdatePatientAsync_WithDuplicateEmail_ThrowsException()
+        {
+            //Arrange
+            var duplicateEmailPatient = new Data.Model.Patient
+            {
+                FirstName = "Fitzie",
+                LastName = "Darcy",
+                Ssn = "123-12-1234",
+                Email = "misunderstood@longbourne.house",
+                Street = "123 Longbourne Circle",
+                City = "Longbourne",
+                State = "TN",
+                Postal = "12321",
+                Age = 35,
+                Height = 72,
+                Weight = 200,
+                Insurance = "Queen's Care",
+                Gender = "Male",
+            };
+            //Act
+            Func<Task> result = async () => { await patientProvider.UpdatePatientAsync(1, duplicateEmailPatient); };
+            //Assert
+            await result.Should().ThrowAsync<ConflictException>();
+        }
+
+        [Fact]
+        public async Task DeletePatientAsync_WithNoPatientDatabase_ThrowsException()
+        {
+            patientRepositoryStub.Setup(x => x.DeletePatientByIdAsync(1)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await patientProvider.DeletePatientByIdAsync(1); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+        [Fact]
+        public async Task DeletePatientAsync_WithValidId_ReturnsDeletedDto()
+        {
+            var result = await patientProvider.DeletePatientByIdAsync(3);
+            result.Should().BeEquivalentTo(testPatient3,
+                options => options.ComparingByMembers<Data.Model.Patient>());
+
+        }
+
+        [Fact]
+        public async Task DeletePatientAsync_WithNonexistentId_ThrowsException()
+        {
+            Func<Task> result = async () => { await patientProvider.DeletePatientByIdAsync(100); };
+            await result.Should().ThrowAsync<NotFoundException>();
+
+        }
+
+            [Fact]
+        public void ValiditeIfEmptyOrNull_ReturnsTrueIfEmpty()
+        {
+            var given = string.Empty;
+            var actual = patientProvider.ValidateIfEmptyOrNull(given);
+            actual.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ValidateIfEmptyOrNull_ReturnsTrueIfNull()
+        {
+            string given = null;
+            var actual = patientProvider.ValidateIfEmptyOrNull(given);
+            actual.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ValidateIfEmptyOrNull_ReturnsTrueIfOnlySpaces()
+        {
+            var given = "   ";
+            var actual = patientProvider.ValidateIfEmptyOrNull(given);
+            actual.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ValidateIfEmptyOrNull_ReturnsFalseIfNotEmptyOrNull()
+        {
+            var given = "I have no patients for this...";
+            var actual = patientProvider.ValidateIfEmptyOrNull(given);
+            actual.Should().BeFalse();
+        }
+    }
+}
 
 
-//            testMovieDatabase = new List<Data.Model.Movie> { testMovie1, testMovie2, testMovie3 };
-//            movieRepositoryStub.Setup(x => x.CreateMovieAsync(testMovie)).ReturnsAsync(testMovie);
-//            movieRepositoryStub.Setup(x => x.CreateMovieAsync(badTestMovie)).ReturnsAsync(badTestMovie);
-//            movieRepositoryStub.Setup(x => x.GetAllMoviesAsync()).ReturnsAsync(testMovieDatabase);
-//            movieRepositoryStub.Setup(x => x.GetMovieByIdAsync(1)).ReturnsAsync(testMovie1);
-//            movieRepositoryStub.Setup(x => x.UpdateMovieAsync(testMovieAltered)).ReturnsAsync(testMovieAltered);
-//            movieRepositoryStub.Setup(x => x.DeleteMovieByIdAsync(1)).ReturnsAsync(testMovie1);
-
-//        }
-
-//        [Fact]
-//        public async Task CreateMovieAsync_WithNoDatabase_ThrowsException()
-//        {
-//            movieRepositoryStub.Setup(x => x.CreateMovieAsync(testMovie)).Throws(new ServiceUnavailableException("Oops"));
-//            Func<Task> result = async () => { await movieProvider.CreateMovieAsync(testMovie); };
-//            //Assert
-//            await result.Should().ThrowAsync<ServiceUnavailableException>();
-
-//        }
-
-//        [Fact]
-//        public async Task CreateMovieAsync_WithValidInfo_ReturnsDto()
-//        {
-//            var result = await movieProvider.CreateMovieAsync(testMovie);
-//            result.Should().BeEquivalentTo(testMovie,
-//                options => options.ComparingByMembers<Data.Model.Movie>());
-
-//        }
-
-//        [Fact]
-//        public async Task CreateMovieAsync_WithInvalidInfo_ThrowsException()
-//        {
-//            //Arrange
-//            //Act
-//            Func<Task> result = async () => { await movieProvider.CreateMovieAsync(badTestMovie); };
-//            //Assert
-//            await result.Should().ThrowAsync<BadRequestException>();
-//        }
-
-//        [Fact]
-//        public async Task CreateMovieAsync_MissingRentalCostAndSku_ThrowsException()
-//        {
-//            //Arrange
-//            //Act
-//            Func<Task> result = async () => { await movieProvider.CreateMovieAsync(badTestMovie2); };
-//            //Assert
-//            await result.Should().ThrowAsync<BadRequestException>();
-//        }
-
-//        [Fact]
-//        public async Task CreateMovieAsync_WithDuplicateSku_ThrowsException()
-//        {
-//            //Arrange
-//            //Act
-//            Func<Task> result = async () => { await movieProvider.CreateMovieAsync(duplicateSkuMovie); };
-//            //Assert
-//            await result.Should().ThrowAsync<ConflictException>();
-//        }
-
-//        [Fact]
-//        public async Task GetAllMoviesAsync_WithMoviesInDatabase_ReturnsList()
-//        {
-//            var result = await movieProvider.GetAllMoviesAsync();
-//            result.Should().BeEquivalentTo(testMovieDatabase,
-//                options => options.ComparingByMembers<Data.Model.Movie>());
-//        }
-
-//        [Fact]
-//        public async Task GetAllMoviesAsync_WithNoMoviesInDatabase_ReturnsEmptyList()
-//        {
-//            var emptyTestMovieDatabase = new List<Data.Model.Movie> { };
-
-//            movieRepositoryStub.Setup(x => x.GetAllMoviesAsync()).ReturnsAsync(emptyTestMovieDatabase);
-
-//            var result = await movieProvider.GetAllMoviesAsync();
-//            result.Should().BeEquivalentTo(emptyTestMovieDatabase);
-//        }
-
-//        [Fact]
-//        public async Task GetMovieByIdAsync_WithValidId_ReturnsMovie()
-//        {
-//            var result = await movieProvider.GetMovieByIdAsync(1);
-//            result.Should().BeEquivalentTo(testMovie1,
-//                options => options.ComparingByMembers<Data.Model.Movie>());
-//        }
-
-//        [Fact]
-//        public async Task GetMovieByIdAsync_WithNonexistentId_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await movieProvider.GetMovieByIdAsync(100); };
-//            await result.Should().ThrowAsync<NotFoundException>();
-//        }
-
-//        [Fact]
-//        public async Task UpdateMovieAsync_WithValidInfo_ReturnsUpdatedDto()
-//        {
-//            var result = await movieProvider.UpdateMovieAsync(1, testMovieAltered);
-//            result.Should().BeEquivalentTo(testMovieAltered,
-//                options => options.ComparingByMembers<Data.Model.Movie>());
-
-//        }
-
-//        [Fact]
-//        public async Task UpdateMovieAsync_WithNonexistentId_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await movieProvider.UpdateMovieAsync(100, testMovieAltered); };
-//            await result.Should().ThrowAsync<NotFoundException>();
-
-//        }
-
-//        [Fact]
-//        public async Task UpdateMovieAsync_WithInvalidInfo_ThrowsError()
-//        {
-//            Func<Task> result = async () => { await movieProvider.UpdateMovieAsync(1, badTestMovieAltered); };
-//            await result.Should().ThrowAsync<BadRequestException>();
-
-//        }
-
-//        [Fact]
-//        public async Task UpdateMovieAsync_WithDuplicateSku_ThrowsException()
-//        {
-//            //Arrange
-//            //Act
-//            Func<Task> result = async () => { await movieProvider.UpdateMovieAsync(1, duplicateSkuMovie); };
-//            //Assert
-//            await result.Should().ThrowAsync<ConflictException>();
-//        }
-
-//        [Fact]
-//        public async Task DeleteMovieAsync_WithValidId_ReturnsDeletedDto()
-//        {
-//            var result = await movieProvider.DeleteMovieByIdAsync(1);
-//            result.Should().BeEquivalentTo(testMovie1,
-//                options => options.ComparingByMembers<Data.Model.Movie>());
-
-//        }
-
-//        [Fact]
-//        public async Task DeleteMovieAsync_WithNonexistentId_ThrowsException()
-//        {
-//            Func<Task> result = async () => { await movieProvider.DeleteMovieByIdAsync(100); };
-//            await result.Should().ThrowAsync<NotFoundException>();
-
-//        }
-
-//        [Fact]
-//        public void ValidateSkuFormat_WithProperSku_ReturnsTrue()
-//        {
-//            var given = "WESAND-2009";
-//            var actual = movieProvider.ValidateSkuFormat(given);
-//            actual.Should().BeTrue();
-
-//        }
-
-//        [Fact]
-//        public void ValidateSkuFormat_WithInvalidSku_ReturnsFalse()
-//        {
-//            var given = "Movies are neat!";
-//            var actual = movieProvider.ValidateSkuFormat(given);
-//            actual.Should().BeFalse();
-
-//        }
-
-//        [Fact]
-//        public void ValiditeIfEmptyOrNull_ReturnsTrueIfEmpty()
-//        {
-//            var given = string.Empty;
-//            var actual = movieProvider.ValidateIfEmptyOrNull(given);
-//            actual.Should().BeTrue();
-//        }
-
-//        [Fact]
-//        public void ValidateIfEmptyOrNull_ReturnsTrueIfNull()
-//        {
-//            string given = null;
-//            var actual = movieProvider.ValidateIfEmptyOrNull(given);
-//            actual.Should().BeTrue();
-//        }
-
-//        [Fact]
-//        public void ValidateIfEmptyOrNull_ReturnsTrueIfOnlySpaces()
-//        {
-//            var given = "   ";
-//            var actual = movieProvider.ValidateIfEmptyOrNull(given);
-//            actual.Should().BeTrue();
-//        }
-
-//        [Fact]
-//        public void ValidateIfEmptyOrNull_ReturnsFalseIfNotEmptyOrNull()
-//        {
-//            var given = "Blockbuster isn't dead!";
-//            var actual = movieProvider.ValidateIfEmptyOrNull(given);
-//            actual.Should().BeFalse();
-//        }
-//    }
-//}
-
-     

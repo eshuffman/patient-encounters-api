@@ -4,11 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using MovieRentalsAPI.API;
-using MovieRentalsAPI.Data.Context;
+using HealthAPI.Data.Context;
 using System;
 
-namespace MovieRentalsAPI.IntegrationTesting.Utilities
+namespace HealthAPI.IntegrationTests.Utilities
 {
     /// <summary>
     /// A custom WebApplicationFactory class to initilize test database
@@ -23,9 +22,9 @@ namespace MovieRentalsAPI.IntegrationTesting.Utilities
         {
             builder.ConfigureServices(services =>
             {
-                services.RemoveAll(typeof(MovieCtx));
+                services.RemoveAll(typeof(HealthCtx));
 
-                services.AddDbContext<MovieCtx>((options, context) =>
+                services.AddDbContext<HealthCtx>((options, context) =>
                 {
                     context.UseNpgsql("Host=localhost; Port=5432; Database=postgres_tests; UserName=postgres; Password=root");
                 });
@@ -34,7 +33,7 @@ namespace MovieRentalsAPI.IntegrationTesting.Utilities
 
                 using var scope = serviceProvider.CreateScope();
                 var scopedServices = scope.ServiceProvider;
-                var context = scopedServices.GetRequiredService<MovieCtx>();
+                var context = scopedServices.GetRequiredService<HealthCtx>();
                 var logger = scopedServices.GetRequiredService<ILogger<WebApplicationFactory<Startup>>>();
 
                 context.Database.EnsureCreated();
