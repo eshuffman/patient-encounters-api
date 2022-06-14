@@ -1,6 +1,10 @@
 ﻿<Properties StartupConfiguration="{0D2A81A4-9D08-4FDE-B355-7323E39A4280}|Default">
   <MonoDevelop.Ide.ItemProperties.HealthAPI PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workbench ActiveDocument="HealthAPI.IntegrationTests/IntegrationTests/EncounterIntegrationTests.cs">
+    <Files>
+      <File FileName="HealthAPI.UnitTests/Unit Tests/PatientTests.cs" Line="1" Column="1" />
+      <File FileName="HealthAPI.IntegrationTests/IntegrationTests/EncounterIntegrationTests.cs" Line="1" Column="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
@@ -29,25 +33,17 @@
             <Node name="HealthAPI.Provider" expanded="True">
               <Node name="Providers" expanded="True" />
             </Node>
-            <Node name="HealthAPI.UnitTests" expanded="True">
-              <Node name="Unit Tests" expanded="True" />
-            </Node>
-            <Node name="HealthAPI.Utilities" expanded="True" />
+            <Node name="HealthAPI.UnitTests" expanded="True" />
           </Node>
         </State>
       </Pad>
       <Pad Id="MonoDevelop.UnitTesting.TestPad">
         <State name="__root__">
-          <Node name="final-health-project" expanded="True">
-            <Node name="HealthAPI.IntegrationTests" expanded="True">
-              <Node name="HealthAPI.IntegrationTests.IntegrationTests" expanded="True">
-                <Node name="EncounterIntegrationTests" expanded="True">
-                  <Node name="UpdateEncounterByIdAsync_Returns201" selected="True" />
-                </Node>
-              </Node>
-            </Node>
+          <Node name="final-health-project" expanded="True" selected="True">
             <Node name="HealthAPI.UnitTests" expanded="True">
-              <Node name="HealthAPI.Testing.UnitTests" expanded="True" />
+              <Node name="HealthAPI.Testing.UnitTests" expanded="True">
+                <Node name="PatientProviderTests" expanded="True" />
+              </Node>
             </Node>
           </Node>
         </State>
