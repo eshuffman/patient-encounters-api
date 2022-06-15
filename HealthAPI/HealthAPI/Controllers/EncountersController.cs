@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
 using HealthAPI.DTOMappings;
 
 namespace HealthAPI.Controllers
@@ -40,7 +39,7 @@ namespace HealthAPI.Controllers
         /// <param name="encounterToCreate"></param>
         /// <returns>DTO of created patient encounter</returns>
         [HttpPost("{patientId}/encounters")]
-        public async Task<ActionResult<EncounterDTO>> CreateEncounterAsync(int? patientId, [FromBody] EncounterDTO encounterToCreate)
+        public async Task<ActionResult<EncounterDTO>> CreateEncounterAsync(int patientId, [FromBody] EncounterDTO encounterToCreate)
         {
             _logger.LogInformation("Request received for CreateEncounterAsync");
 
@@ -95,12 +94,12 @@ namespace HealthAPI.Controllers
         [HttpPut("{patientId}/encounters/{encounterId}")]
 
         public async Task<ActionResult<EncounterDTO>> UpdateEncounterAsync(
-            int encounterId, [FromBody] EncounterDTO encounterToUpdate)
+            int encounterId, [FromBody] EncounterDTO encounterToUpdate, int patientId)
         {
             _logger.LogInformation("Request received for UpdateEncounterAsync");
 
             var encounter = _mapper.Map<Encounter>(encounterToUpdate);
-            var updatedEncounter = await _encounterProvider.UpdateEncounterAsync(encounterId, encounter);
+            var updatedEncounter = await _encounterProvider.UpdateEncounterAsync(encounterId, encounter, patientId);
             var encounterDto = _mapper.Map<EncounterDTO>(updatedEncounter);
 
             return Ok(encounterDto);

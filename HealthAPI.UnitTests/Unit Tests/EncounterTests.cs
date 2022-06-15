@@ -192,6 +192,16 @@ namespace HealthAPI.Testing.UnitTests
         }
 
         [Fact]
+        public async Task CreateEncounterAsync_WithNoPatientDatabase_ThrowsException()
+        {
+            patientRepositoryStub.Setup(x => x.GetPatientByIdAsync(1)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await encounterProvider.CreateEncounterAsync(1, testEncounter1); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+        [Fact]
         public async Task CreateEncounterAsync_WithValidInfo_ReturnsDto()
         {
             var result = await encounterProvider.CreateEncounterAsync(1, testEncounter1);
@@ -227,12 +237,48 @@ namespace HealthAPI.Testing.UnitTests
         }
 
         [Fact]
+        public async Task CreateEncounterAsync_WithInvalidPatientId_ThrowsError()
+        {
+            var badTestEncounter = new Data.Model.Encounter
+            {
+                PatientId = 100,
+                Notes = "Distant look in eyes",
+                VisitCode = "A1A 2B2",
+                Provider = "Dr. Phil Collinsworth",
+                BillingCode = "111.222.333-44",
+                Icd10 = "A11",
+                TotalCost = 99.99m,
+                Copay = 20.01m,
+                ChiefComplaint = "Heartache",
+                Pulse = 122,
+                Systolic = 123,
+                Diastolic = 90,
+                Date = "1796-02-21",
+            };
+
+            Func<Task> result = async () => { await encounterProvider.CreateEncounterAsync(100, badTestEncounter); };
+            //Assert
+            await result.Should().ThrowAsync<NotFoundException>();
+
+        }
+
+        [Fact]
         public async Task GetAllEncountersByIdAsync_WithNoDatabase_ThrowsException()
         {
             encounterRepositoryStub.Setup(x => x.GetAllEncountersByIdAsync(1)).Throws(new ServiceUnavailableException("Oops"));
             Func<Task> result = async () => { await encounterProvider.GetAllEncountersByIdAsync(1); };
             //Assert
             await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+
+        [Fact]
+        public async Task GetAllEncountersByIdAsync_WithInvalidPatient_ThrowsException()
+        {
+            patientRepositoryStub.Setup(x => x.GetPatientByIdAsync(100)).Throws(new NotFoundException("Oops"));
+            Func<Task> result = async () => { await encounterProvider.GetAllEncountersByIdAsync(100); };
+            await result.Should().ThrowAsync<NotFoundException>();
 
         }
 
@@ -257,6 +303,16 @@ namespace HealthAPI.Testing.UnitTests
         }
 
         [Fact]
+        public async Task GetEncounterByIdAsync_WithNoDatabase_ThrowsException()
+        {
+            encounterRepositoryStub.Setup(x => x.GetEncounterByIdAsync(1)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await encounterProvider.GetEncounterByIdAsync(1); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+        [Fact]
         public async Task GetEncounterByIdAsync_WithValidId_ReturnsEncounter()
         {
             var result = await encounterProvider.GetEncounterByIdAsync(1);
@@ -275,16 +331,27 @@ namespace HealthAPI.Testing.UnitTests
         public async Task UpdateEncounterAsync_WithNoDatabase_ThrowsException()
         {
             encounterRepositoryStub.Setup(x => x.UpdateEncounterAsync(testEncounterAltered)).Throws(new ServiceUnavailableException("Oops"));
-            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(1, testEncounterAltered); };
+            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(1, testEncounterAltered, 1); };
             //Assert
             await result.Should().ThrowAsync<ServiceUnavailableException>();
 
         }
+
+        [Fact]
+        public async Task UpdateEncounterAsync_WithNoEncounterDatabase_ThrowsException()
+        {
+            encounterRepositoryStub.Setup(x => x.GetEncounterByIdAsync(1)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(1, testEncounterAltered, 1); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
         [Fact]
         public async Task UpdateEncounterAsync_WithValidInfo_ReturnsUpdatedDto()
         {
 
-            var result = await encounterProvider.UpdateEncounterAsync(1, testEncounterAltered);
+            var result = await encounterProvider.UpdateEncounterAsync(1, testEncounterAltered, 1);
             result.Should().BeEquivalentTo(testEncounterAltered,
                 options => options.ComparingByMembers<Data.Model.Encounter>());
 
@@ -293,13 +360,13 @@ namespace HealthAPI.Testing.UnitTests
         [Fact]
         public async Task UpdateEncounterAsync_WithNonexistentId_ThrowsError()
         {
-            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(100, testEncounterAltered); };
+            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(100, testEncounterAltered, 1); };
             await result.Should().ThrowAsync<NotFoundException>();
 
         }
 
         [Fact]
-        public async Task UpdatePatientAsync_WithInvalidInfo_ThrowsError()
+        public async Task UpdateEncounterAsync_WithInvalidInfo_ThrowsError()
         {
             var badTestEncounterAltered = new Data.Model.Encounter
             {
@@ -318,7 +385,19 @@ namespace HealthAPI.Testing.UnitTests
                 Diastolic = -1,
                 Date = "1",
             };
-            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(1, badTestEncounterAltered); };
+            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(1, badTestEncounterAltered, 1); };
+            await result.Should().ThrowAsync<BadRequestException>();
+
+        }
+
+        [Fact]
+        public async Task UpdateEncounterAsync_WithMissingInfo_ThrowsError()
+        {
+            var badTestEncounterAltered = new Data.Model.Encounter
+            {
+                Id = 1,
+            };
+            Func<Task> result = async () => { await encounterProvider.UpdateEncounterAsync(1, badTestEncounterAltered, 1); };
             await result.Should().ThrowAsync<BadRequestException>();
 
         }

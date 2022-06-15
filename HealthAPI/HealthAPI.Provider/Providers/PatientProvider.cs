@@ -420,7 +420,7 @@ namespace HealthAPI.Provider.Providers
         public async Task<bool> IsDeleteable(int patientId)
         {
             var encounters = await _encounterRepository.GetAllEncountersByIdAsync(patientId);
-            if (encounters.Count == 0)
+            if (encounters == null || encounters.Count < 1)
             {
                 return true;
             }

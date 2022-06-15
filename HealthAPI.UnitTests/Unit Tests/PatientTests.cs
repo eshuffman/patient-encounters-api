@@ -97,7 +97,7 @@ namespace HealthAPI.Testing.UnitTests
                 FirstName = "Fitzwilhelm",
                 LastName = "Darcy",
                 Ssn = "123-12-1234",
-                Email = "prideful@longbourne.house",
+                Email = "joyous@longbourne.house",
                 Street = "123 Longbourne Circle",
                 City = "Longbourne",
                 State = "TN",
@@ -178,7 +178,7 @@ namespace HealthAPI.Testing.UnitTests
 
         [Fact]
         public async Task CreatePatientAsync_WithValidInfo_ReturnsDto()
-        {            
+        {
             var testPatient4 = new Data.Model.Patient
             {
                 Id = 22,
@@ -234,7 +234,7 @@ namespace HealthAPI.Testing.UnitTests
         public async Task CreatePatientAsync_WithMissingInfo_ThrowsException()
         {
             //Arrange
-            var badTestPatient = new Data.Model.Patient {};
+            var badTestPatient = new Data.Model.Patient { };
             patientRepositoryStub.Setup(x => x.CreatePatientAsync(badTestPatient)).ReturnsAsync(badTestPatient);
             //Act
             Func<Task> result = async () => { await patientProvider.CreatePatientAsync(badTestPatient); };
@@ -248,6 +248,7 @@ namespace HealthAPI.Testing.UnitTests
             //Arrange
             var duplicateEmailPatient = new Data.Model.Patient
             {
+                Id = 13,
                 FirstName = "Fitzie",
                 LastName = "Darcy",
                 Ssn = "123-12-1234",
@@ -262,6 +263,7 @@ namespace HealthAPI.Testing.UnitTests
                 Insurance = "Queen's Care",
                 Gender = "Male",
             };
+            patientRepositoryStub.Setup(x => x.GetPatientByEmailAsync(duplicateEmailPatient)).ReturnsAsync(testPatient1);
             //Act
             Func<Task> result = async () => { await patientProvider.CreatePatientAsync(duplicateEmailPatient); };
             //Assert
@@ -326,6 +328,26 @@ namespace HealthAPI.Testing.UnitTests
         public async Task UpdatePatientAsync_WithNoDatabase_ThrowsException()
         {
             patientRepositoryStub.Setup(x => x.UpdatePatientAsync(testPatientAltered)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await patientProvider.UpdatePatientAsync(1, testPatientAltered); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+        [Fact]
+        public async Task UpdatePatientAsync_WithNoPatientCheckDatabase_ThrowsException()
+        {
+            patientRepositoryStub.Setup(x => x.GetPatientByIdAsync(1)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await patientProvider.UpdatePatientAsync(1, testPatient1); };
+            //Assert
+            await result.Should().ThrowAsync<ServiceUnavailableException>();
+
+        }
+
+        [Fact]
+        public async Task UpdatePatientAsync_WithNoEmailCheckDatabase_ThrowsException()
+        {
+            patientRepositoryStub.Setup(x => x.GetPatientByEmailAsync(testPatientAltered)).Throws(new ServiceUnavailableException("Oops"));
             Func<Task> result = async () => { await patientProvider.UpdatePatientAsync(1, testPatientAltered); };
             //Assert
             await result.Should().ThrowAsync<ServiceUnavailableException>();
@@ -409,6 +431,7 @@ namespace HealthAPI.Testing.UnitTests
                 Insurance = "Queen's Care",
                 Gender = "Male",
             };
+            patientRepositoryStub.Setup(x => x.GetPatientByEmailAsync(duplicateEmailPatient)).ReturnsAsync(testPatient1);
             //Act
             Func<Task> result = async () => { await patientProvider.UpdatePatientAsync(1, duplicateEmailPatient); };
             //Assert
@@ -418,8 +441,8 @@ namespace HealthAPI.Testing.UnitTests
         [Fact]
         public async Task DeletePatientAsync_WithNoPatientDatabase_ThrowsException()
         {
-            patientRepositoryStub.Setup(x => x.DeletePatientByIdAsync(1)).Throws(new ServiceUnavailableException("Oops"));
-            Func<Task> result = async () => { await patientProvider.DeletePatientByIdAsync(1); };
+            patientRepositoryStub.Setup(x => x.DeletePatientByIdAsync(2)).Throws(new ServiceUnavailableException("Oops"));
+            Func<Task> result = async () => { await patientProvider.DeletePatientByIdAsync(2); };
             //Assert
             await result.Should().ThrowAsync<ServiceUnavailableException>();
 
@@ -442,7 +465,15 @@ namespace HealthAPI.Testing.UnitTests
 
         }
 
-            [Fact]
+        [Fact]
+        public async Task DeletePatientAsync_WithExistingEncounters_ThrowsException()
+        {
+            Func<Task> result = async () => { await patientProvider.DeletePatientByIdAsync(1); };
+            await result.Should().ThrowAsync<ConflictException>();
+
+        }
+
+        [Fact]
         public void ValiditeIfEmptyOrNull_ReturnsTrueIfEmpty()
         {
             var given = string.Empty;

@@ -21,9 +21,9 @@ namespace HealthAPI.DTOs
 
         public string Icd10 { get; set; }
 
-        public decimal TotalCost { get; set; }
+        public decimal? TotalCost { get; set; }
 
-        public decimal Copay { get; set; }
+        public decimal? Copay { get; set; }
 
         public string ChiefComplaint { get; set; }
 

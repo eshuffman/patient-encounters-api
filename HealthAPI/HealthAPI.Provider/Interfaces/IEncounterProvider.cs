@@ -9,10 +9,10 @@ namespace HealthAPI.Provider.Interfaces
     /// </summary>
     public interface IEncounterProvider
     {
-        Task<Encounter> CreateEncounterAsync(int? patientId, Encounter encounter);
+        Task<Encounter> CreateEncounterAsync(int patientId, Encounter encounter);
         Task<IEnumerable<Encounter>> GetAllEncountersByIdAsync(int? patientId);
         Task<Encounter> GetEncounterByIdAsync(int encounterId);
-        Task<Encounter> UpdateEncounterAsync(int encounterId, Encounter encounter);
+        Task<Encounter> UpdateEncounterAsync(int encounterId, Encounter encounter, int patientId);
 
     }
 }

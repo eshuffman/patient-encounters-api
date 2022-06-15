@@ -129,12 +129,12 @@ namespace HealthAPI.IntegrationTests.IntegrationTests
         }
 
         [Fact]
-        public async Task UpdateEncounterByIdAsync_Returns201()
+        public async Task UpdateEncounterAsync_Returns200()
         {
 
             var encounterDTO = new EncounterDTO
             {
-                Id = 14,
+                Id = 24,
                 PatientId = 1,
                 Notes = "Distant look in eyes",
                 VisitCode = "A1A 2B2",
@@ -152,7 +152,7 @@ namespace HealthAPI.IntegrationTests.IntegrationTests
 
             var updatedEncounterDTO = new EncounterDTO
             {
-                Id = 14,
+                Id = 24,
                 PatientId = 1,
                 Notes = "Patient is unreasonably belligerant today",
                 VisitCode = "A1A 2B2",
@@ -171,15 +171,15 @@ namespace HealthAPI.IntegrationTests.IntegrationTests
             var encounterDTOJson = JsonContent.Create(encounterDTO);
             await _client.PostAsync("patients/1/encounters", encounterDTOJson);
 
-            var existingEncounter = await (await _client.GetAsync("patients/1/encounters/14")).Content.ReadAsAsync<EncounterDTO>();
+            var existingEncounter = await (await _client.GetAsync("patients/1/encounters/24")).Content.ReadAsAsync<EncounterDTO>();
             Assert.Equal("1796-02-21", existingEncounter.Date);
 
-            var response = await _client.PutAsJsonAsync("patients/1/encounters/14", updatedEncounterDTO);
+            var response = await _client.PutAsJsonAsync("patients/1/encounters/24", updatedEncounterDTO);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
-        public async Task UpdateEncounterByIdAsync_WithInvalidInformation_Returns400()
+        public async Task UpdateEncounterAsync_WithInvalidInformation_Returns400()
         {
 
             var encounterDTO = new EncounterDTO
@@ -228,7 +228,7 @@ namespace HealthAPI.IntegrationTests.IntegrationTests
         }
 
         [Fact]
-        public async Task UpdateEncounterByIdAsync_WithNonexistentId_Returns404()
+        public async Task UpdateEncounterAsync_WithNonexistentId_Returns404()
         {
             var encounterDTO = new EncounterDTO
             {

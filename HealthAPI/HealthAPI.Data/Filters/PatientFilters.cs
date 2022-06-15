@@ -18,5 +18,10 @@ namespace HealthAPI.Data.Filters
         {
             return patients.Where(p => p.Id == patientId).AsQueryable();
         }
+
+        public static IQueryable<Patient> WherePatientEmailEquals(this IQueryable<Patient> patients, string patientEmail)
+        {
+            return patients.Where(p => p.Email == patientEmail).AsQueryable();
+        }
     }
 }

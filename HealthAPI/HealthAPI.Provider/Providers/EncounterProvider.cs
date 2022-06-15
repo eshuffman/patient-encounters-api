@@ -32,7 +32,7 @@ namespace HealthAPI.Provider.Providers
         /// <param name="newEncounter">Encounter model used to build the encounter object.</param>
         /// <param name="patientId">Id of patient associated with encounter</param>
         /// <returns>The persisted encounter.</returns>
-        public async Task<Encounter> CreateEncounterAsync(int? patientId, Encounter newEncounter)
+        public async Task<Encounter> CreateEncounterAsync(int patientId, Encounter newEncounter)
         {
             Patient patient;
             ValidateEncounterInputFields(newEncounter, patientId);
@@ -127,13 +127,13 @@ namespace HealthAPI.Provider.Providers
             return existingEncounter;
         }
 
-            /// <summary>
-            /// Updates encounter object in database via inputted encounter ID, using inputted encounter model.
-            /// </summary>
-            /// <param name="encounterId"></param>
-            /// <param name="updatedEncounter"></param>
-            /// <returns>Updated rental object.</returns>
-            public async Task<Encounter> UpdateEncounterAsync(int encounterId, Encounter updatedEncounter)
+        /// <summary>
+        /// Updates encounter object in database via inputted encounter ID, using inputted encounter model.
+        /// </summary>
+        /// <param name="encounterId"></param>
+        /// <param name="updatedEncounter"></param>
+        /// <returns>Updated rental object.</returns>
+        public async Task<Encounter> UpdateEncounterAsync(int encounterId, Encounter updatedEncounter, int patientId)
         {
             Encounter existingEncounter;
 
@@ -156,12 +156,12 @@ namespace HealthAPI.Provider.Providers
             if (updatedEncounter.Id == default)
                 updatedEncounter.Id = encounterId;
 
-            ValidateEncounterInputFields(updatedEncounter, encounterId);
+            ValidateEncounterInputFields(updatedEncounter, patientId);
 
             try
             {
                 await _encounterRepository.UpdateEncounterAsync(updatedEncounter);
-                _logger.LogInformation("Rental updated.");
+                _logger.LogInformation("Encounter updated.");
             }
             catch (Exception ex)
             {
@@ -177,7 +177,7 @@ namespace HealthAPI.Provider.Providers
         /// Validation method to check whether patient encounter input fields are not empty and contain appropriately-formatted information
         /// </summary>
         /// <param name="newEncounter"></param>
-        public void ValidateEncounterInputFields(Encounter newEncounter, int? patientId)
+        public void ValidateEncounterInputFields(Encounter newEncounter, int patientId)
         {
             List<string> encounterExceptions = new();
 
@@ -267,7 +267,7 @@ namespace HealthAPI.Provider.Providers
                 }
             }
 
-                if (encounterExceptions.Count > 0)
+            if (encounterExceptions.Count > 0)
             {
                 _logger.LogInformation(" ", encounterExceptions);
                 throw new BadRequestException(string.Join(" ", encounterExceptions));

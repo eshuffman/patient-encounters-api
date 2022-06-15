@@ -134,7 +134,7 @@ namespace HealthAPI.IntegrationTests.IntegrationTests
 
         }
         [Fact]
-        public async Task UpdatePatientByIdAsync_Returns201()
+        public async Task UpdatePatientByIdAsync_Returns200()
         {
             var patientDTO = new PatientDTO
             {
@@ -331,6 +331,15 @@ namespace HealthAPI.IntegrationTests.IntegrationTests
 
             var response = await _client.DeleteAsync("/patients/3");
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+
+        }
+
+        [Fact]
+        public async Task DeletePatientByIdAsync_WithExistingEncounters_Returns409()
+        {
+
+            var response = await _client.DeleteAsync("/patients/1");
+            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
 
         }
 

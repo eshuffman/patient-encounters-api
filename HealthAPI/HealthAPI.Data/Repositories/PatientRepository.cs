@@ -25,7 +25,7 @@ namespace HealthAPI.Data.Repositories
         {
             return await _ctx.Patients
                 .AsNoTracking()
-                .Where(p => p.Email == patient.Email)
+                .WherePatientEmailEquals(patient.Email)
                 .SingleOrDefaultAsync();
         }
 
